@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { CentroNotificaciones } from "@/components/shared/centro-notificaciones";
+import { ReiniciarDemo } from "@/components/shared/reiniciar-demo";
 import { cn } from "@/lib/utils";
 import {
   INICIO_POR_ROL,
@@ -82,6 +83,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </span>
             <SwitchRol rolActivo={rolActivo} />
             {rolActivo && <CentroNotificaciones rol={rolActivo} />}
+            <ReiniciarDemo />
           </div>
         </div>
 
