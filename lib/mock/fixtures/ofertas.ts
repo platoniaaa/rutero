@@ -1,6 +1,6 @@
 import type { BloqueoAgenda, Oferta } from "@/lib/mock/types";
 
-import { dias, horas } from "./tiempo";
+import { dias, finDeSemana, horas } from "./tiempo";
 
 /**
  * Bloqueos de agenda: recorridos propios que dejan al vehículo fuera del
@@ -316,8 +316,9 @@ export function crearOfertas(hoy: Date): Oferta[] {
       destino: "Farellones",
       paradas: [],
       zona: "Cordillera",
-      fechaHoraSalida: dias(hoy, 11, "08:00"),
-      fechaHoraRetorno: dias(hoy, 11, "18:00"),
+      // En sábado: el recorrido escolar de la demo no la bloquea.
+      fechaHoraSalida: finDeSemana(hoy, 8, "sabado", "08:00"),
+      fechaHoraRetorno: finDeSemana(hoy, 8, "sabado", "18:00"),
       esIdaYVuelta: true,
       horasEstimadas: 10,
       cantidadPasajeros: 15,
@@ -373,8 +374,9 @@ export function crearOfertas(hoy: Date): Oferta[] {
       destino: "Embalse El Yeso",
       paradas: [{ nombre: "San José de Maipo", hora: "10:00" }],
       zona: "Santiago",
-      fechaHoraSalida: dias(hoy, 10, "07:30"),
-      fechaHoraRetorno: dias(hoy, 10, "18:30"),
+      // Domingo: queda tomable para el transportista con recorrido escolar.
+      fechaHoraSalida: finDeSemana(hoy, 8, "domingo", "07:30"),
+      fechaHoraRetorno: finDeSemana(hoy, 8, "domingo", "18:30"),
       esIdaYVuelta: true,
       horasEstimadas: 11,
       cantidadPasajeros: 15,

@@ -16,6 +16,7 @@ import type {
   Viaje,
 } from "@/lib/mock/types";
 import {
+  chocaConBloqueo,
   documentosBloqueantes,
   estadoEfectivoDocumento,
   franjaDeOferta,
@@ -272,6 +273,68 @@ export function vehiculoOcupadoEn(
   return franjasOcupadas(datos, carrierId, vehiculoId).some((ocupada) =>
     seSolapan(franja, ocupada.franja),
   );
+}
+
+export type EvaluacionOfertaParaCarrier = {
+  /** null = puede postular con al menos un vehículo. */
+  motivoAtenuada: string | null;
+  /** Vehículos del carrier que cumplen capacidad para esta oferta. */
+  vehiculosAptos: Id[];
+};
+
+/**
+ * Por qué una oferta se muestra atenuada en el feed de este transportista.
+ * Devuelve el primer motivo en orden de gravedad; la pantalla de postulación
+ * usa `evaluarPostulacion` con el detalle completo.
+ */
+export function evaluarOfertaParaCarrier(
+  datos: Datos,
+  ofertaId: Id,
+  carrierId: Id,
+): EvaluacionOfertaParaCarrier {
+  const o = oferta(datos, ofertaId);
+  if (!o) return { motivoAtenuada: "La oferta ya no existe.", vehiculosAptos: [] };
+
+  const flota = flotaDe(datos, carrierId);
+  const franja = franjaDeOferta(o);
+
+  const conCapacidad = flota.filter(
+    (v) => v.capacidadPasajeros >= o.cantidadPasajeros,
+  );
+  if (conCapacidad.length === 0) {
+    const mayor = Math.max(0, ...flota.map((v) => v.capacidadPasajeros));
+    return {
+      motivoAtenuada: `Piden ${o.cantidadPasajeros} pasajeros y tu vehículo más grande lleva ${mayor}.`,
+      vehiculosAptos: [],
+    };
+  }
+
+  const bloqueos = bloqueosDe(datos, carrierId);
+  const libresDeBloqueo = conCapacidad.filter(
+    (v) => !bloqueos.some((b) => chocaConBloqueo(franja, b, v.id)),
+  );
+  if (libresDeBloqueo.length === 0) {
+    const bloqueo = bloqueos.find((b) =>
+      conCapacidad.some((v) => chocaConBloqueo(franja, b, v.id)),
+    );
+    return {
+      motivoAtenuada: `Choca con un bloqueo de tu agenda: ${bloqueo?.motivo ?? "recorrido propio"}.`,
+      vehiculosAptos: [],
+    };
+  }
+
+  const disponibles = libresDeBloqueo.filter(
+    (v) => !vehiculoOcupadoEn(datos, carrierId, v.id, franja),
+  );
+  if (disponibles.length === 0) {
+    return {
+      motivoAtenuada:
+        "Ya tienes un viaje adjudicado que se cruza con estas fechas.",
+      vehiculosAptos: [],
+    };
+  }
+
+  return { motivoAtenuada: null, vehiculosAptos: disponibles.map((v) => v.id) };
 }
 
 export function pasajerosDeViaje(datos: Datos, viajeId: Id) {

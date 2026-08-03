@@ -28,7 +28,8 @@ import type {
   Viaje,
 } from "@/lib/mock/types";
 
-const VERSION_SEED = 1;
+/** Súbela cada vez que cambien las fixtures: regenera el seed guardado. */
+const VERSION_SEED = 2;
 
 /** Ids incrementales sobre el prefijo de cada colección. */
 function nuevoId(prefijo: string, existentes: { id: string }[]): string {

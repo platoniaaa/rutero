@@ -1,0 +1,175 @@
+"use client";
+
+import { use } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ArrowLeft, Send, XCircle } from "lucide-react";
+import { toast } from "sonner";
+
+import { BadgeEstado } from "@/components/shared/badge-estado";
+import { DetalleOferta } from "@/components/shared/detalle-oferta";
+import { EncabezadoPagina } from "@/components/shared/encabezado-pagina";
+import { ListaCargando, ListaError } from "@/components/shared/estado-lista";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { useRutero } from "@/lib/mock/store";
+import {
+  oferta as buscarOferta,
+  respuestasDeOferta,
+  viajePorOferta,
+} from "@/lib/mock/selectores";
+import { useAhora, useDatos } from "@/lib/mock/use-datos";
+import { TONO_OFERTA } from "@/lib/ui/estados";
+import { ETIQUETA_ESTADO_OFERTA } from "@/lib/utils/format";
+
+export default function DetalleOfertaAgenciaPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = use(params);
+  const router = useRouter();
+  const { datos, cargando } = useDatos();
+  const ahora = useAhora();
+  const publicarOferta = useRutero((s) => s.publicarOferta);
+  const cancelarOferta = useRutero((s) => s.cancelarOferta);
+
+  if (cargando) {
+    return (
+      <div className="flex flex-col gap-6">
+        <EncabezadoPagina seccion="Agencia" titulo="Detalle de la oferta" />
+        <ListaCargando filas={3} />
+      </div>
+    );
+  }
+
+  const oferta = buscarOferta(datos, id);
+
+  if (!oferta) {
+    return (
+      <div className="flex flex-col gap-6">
+        <EncabezadoPagina seccion="Agencia" titulo="Detalle de la oferta" />
+        <ListaError
+          titulo="Esta oferta no existe"
+          detalle="Puede que el enlace esté malo o que la demo se haya reiniciado."
+        />
+        <Button variant="outline" className="w-fit" asChild>
+          <Link href="/agencia/ofertas">
+            <ArrowLeft className="size-4" aria-hidden />
+            Volver a Mis ofertas
+          </Link>
+        </Button>
+      </div>
+    );
+  }
+
+  const respuestas = respuestasDeOferta(datos, oferta.id);
+  const viaje = viajePorOferta(datos, oferta.id);
+  const abierta =
+    oferta.estado === "publicada" || oferta.estado === "con_respuestas";
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div>
+        <Button variant="ghost" size="sm" className="-ml-2 mb-2" asChild>
+          <Link href="/agencia/ofertas">
+            <ArrowLeft className="size-4" aria-hidden />
+            Mis ofertas
+          </Link>
+        </Button>
+        <EncabezadoPagina
+          seccion={oferta.codigo}
+          titulo={oferta.titulo}
+          acciones={
+            <div className="flex flex-wrap items-center gap-2">
+              <BadgeEstado tono={TONO_OFERTA[oferta.estado]}>
+                {ETIQUETA_ESTADO_OFERTA[oferta.estado]}
+              </BadgeEstado>
+
+              {oferta.estado === "borrador" && (
+                <Button
+                  onClick={() => {
+                    publicarOferta(oferta.id);
+                    toast.success("Oferta publicada");
+                  }}
+                >
+                  <Send className="size-4" aria-hidden />
+                  Publicar
+                </Button>
+              )}
+
+              {abierta && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="outline">
+                      <XCircle className="size-4" aria-hidden />
+                      Cancelar oferta
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle className="font-display text-display-sm">
+                        ¿Cancelar esta oferta?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Las respuestas que hayan llegado se rechazan y los
+                        transportistas quedan notificados. Esto no se puede
+                        deshacer.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Volver</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => {
+                          cancelarOferta(oferta.id);
+                          toast.success("Oferta cancelada");
+                        }}
+                      >
+                        Cancelar la oferta
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
+
+              {viaje && (
+                <Button
+                  variant="outline"
+                  onClick={() => router.push(`/agencia/viajes/${viaje.id}`)}
+                >
+                  Ver el viaje adjudicado
+                </Button>
+              )}
+            </div>
+          }
+        />
+      </div>
+
+      <DetalleOferta oferta={oferta} ahora={ahora} />
+
+      {/* La bandeja de respuestas comparables llega en el Hito 4. */}
+      <section className="rounded-lg border border-line bg-surface p-5">
+        <h2 className="font-display text-display-sm text-ink">
+          Respuestas ({respuestas.length})
+        </h2>
+        <p className="mt-2 text-sm text-meta">
+          {respuestas.length === 0
+            ? abierta
+              ? "Todavía no llegan respuestas. Suben un 40% cuando el presupuesto referencial está a precio de mercado."
+              : "Esta oferta no recibió respuestas."
+            : "La bandeja comparable para adjudicar se construye en el hito 4."}
+        </p>
+      </section>
+    </div>
+  );
+}
