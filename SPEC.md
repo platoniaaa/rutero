@@ -190,7 +190,7 @@ confirmada → pago_retenido → en_curso → finalizada → liberada
 3. Agencia responde: toma el grupo, propone su ticket por pasajero y acepta o negocia la comisión.
 4. Transportista adjudica.
 5. La agencia cobra a los pasajeros por fuera. Deposita en escrow la comisión del transportista.
-6. Tour se completa → se libera la comisión menos el 20% de Rutero.
+6. Tour se completa → se libera la comisión menos el 5% de Rutero.
 
 > **Nota de diseño:** en F2 el transportista suele quedarse también con el viaje. La UI debe permitir enlazar un `PassengerLead` con un `Booking` de transporte para que sea una sola operación.
 
@@ -207,7 +207,7 @@ confirmada → pago_retenido → en_curso → finalizada → liberada
 
 **Anti-fuga (crítico)**
 - Teléfono y email quedan ocultos hasta que se adjudica y se paga el escrow.
-- Chat in-app. Si detecta un patrón de número telefónico, muestra un aviso suave: "Recuerda que el respaldo del viaje y tu descuento por volumen solo aplican dentro de Rutero."
+- Chat in-app. Si detecta un patrón de número telefónico, muestra un aviso suave: "Recuerda que el respaldo del viaje solo aplica dentro de Rutero."
 - El historial y las calificaciones no son portables.
 
 **Cancelaciones**

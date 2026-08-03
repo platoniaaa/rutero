@@ -1,39 +1,13 @@
-import type {
-  Documento,
-  EstadoDocumento,
-  TipoDocumento,
-  TipoDocumentoConductor,
-  TipoDocumentoCuenta,
-  TipoDocumentoVehiculo,
-} from "@/lib/mock/types";
+import {
+  DOCS_CONDUCTOR,
+  DOCS_CUENTA,
+  DOCS_SIN_VENCIMIENTO as SIN_VENCIMIENTO,
+  docsDeVehiculo,
+} from "@/lib/documentos-requeridos";
+import type { Documento, EstadoDocumento, TipoDocumento } from "@/lib/mock/types";
 
 import { VEHICULOS } from "./cuentas";
 import { dias } from "./tiempo";
-
-const DOCS_CUENTA: TipoDocumentoCuenta[] = [
-  "rut_erut",
-  "inicio_actividades",
-  "inscripcion_ds80_servicio",
-  "seguro_responsabilidad_civil",
-  "seguro_personal_conduccion",
-];
-
-const DOCS_VEHICULO: TipoDocumentoVehiculo[] = [
-  "inscripcion_ds80_vehiculo",
-  "permiso_circulacion",
-  "revision_tecnica",
-  "soap",
-  "certificado_emisiones",
-];
-
-const DOCS_CONDUCTOR: TipoDocumentoConductor[] = [
-  "licencia_profesional",
-  "certificado_antecedentes",
-  "hoja_vida_conductor",
-];
-
-/** El RUT y el inicio de actividades no vencen. */
-const SIN_VENCIMIENTO: TipoDocumento[] = ["rut_erut", "inicio_actividades"];
 
 /**
  * Días hasta el vencimiento por documento. Un número negativo deja el documento
@@ -202,10 +176,9 @@ export function crearDocumentos(hoy: Date): Documento[] {
   for (const vehiculo of VEHICULOS) {
     const perfil = PERFIL_VEHICULO[vehiculo.id];
     if (!perfil) continue;
-    const tipos: TipoDocumentoVehiculo[] = vehiculo.interurbano
-      ? [...DOCS_VEHICULO, "tacografo"]
-      : DOCS_VEHICULO;
-    documentos.push(...crearGrupo(hoy, vehiculo.id, tipos, perfil));
+    documentos.push(
+      ...crearGrupo(hoy, vehiculo.id, docsDeVehiculo(vehiculo.interurbano), perfil),
+    );
   }
 
   for (const [conductorId, perfil] of Object.entries(PERFIL_CONDUCTOR)) {

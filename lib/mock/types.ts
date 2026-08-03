@@ -182,28 +182,36 @@ export type Agencia = {
  * Franja en la que el transportista no está disponible por recorridos propios:
  * escolar, contratos de empresa, circuitos propios.
  */
-export type BloqueoAgenda = {
+type BloqueoBase = {
   id: Id;
   carrierId: Id;
   motivo: string;
   /** Vehículo específico, o toda la flota si no se indica. */
   vehiculoId?: Id;
-} & (
-  | {
-      tipo: "recurrente";
-      /** 0 = domingo, 6 = sábado. */
-      diasSemana: number[];
-      horaInicio: string;
-      horaFin: string;
-      desde: FechaISO;
-      hasta?: FechaISO;
-    }
-  | {
-      tipo: "puntual";
-      inicio: FechaISO;
-      fin: FechaISO;
-    }
-);
+};
+
+export type BloqueoRecurrente = BloqueoBase & {
+  tipo: "recurrente";
+  /** 0 = domingo, 6 = sábado. */
+  diasSemana: number[];
+  horaInicio: string;
+  horaFin: string;
+  desde: FechaISO;
+  hasta?: FechaISO;
+};
+
+export type BloqueoPuntual = BloqueoBase & {
+  tipo: "puntual";
+  inicio: FechaISO;
+  fin: FechaISO;
+};
+
+export type BloqueoAgenda = BloqueoRecurrente | BloqueoPuntual;
+
+/** `Omit` sobre una unión la colapsa, así que se distribuye a mano. */
+export type NuevoBloqueo =
+  | Omit<BloqueoRecurrente, "id">
+  | Omit<BloqueoPuntual, "id">;
 
 /**
  * Una sola cuenta cubre al furgonero independiente y a la empresa con flota.

@@ -11,13 +11,13 @@ import {
 } from "@/lib/utils/rules";
 import { SESION_DEMO, crearSeed } from "@/lib/mock/fixtures";
 import type {
-  BloqueoAgenda,
   Calificacion,
   Conductor,
   Datos,
   Documento,
   Grupo,
   Id,
+  NuevoBloqueo,
   Oferta,
   OfertaGrupo,
   Pasajero,
@@ -125,7 +125,7 @@ type Acciones = {
   agregarConductor: (conductor: Omit<Conductor, "id">) => Id;
   actualizarConductor: (conductorId: Id, cambios: Partial<Conductor>) => void;
   eliminarConductor: (conductorId: Id) => void;
-  agregarBloqueo: (bloqueo: Omit<BloqueoAgenda, "id">) => void;
+  agregarBloqueo: (bloqueo: NuevoBloqueo) => void;
   eliminarBloqueo: (bloqueoId: Id) => void;
 
   // --- Documentos ---
@@ -580,7 +580,7 @@ export const useRutero = create<RuteroState>()(
             ...s.datos,
             bloqueosAgenda: [
               ...s.datos.bloqueosAgenda,
-              { ...bloqueo, id: nuevoId("bl", s.datos.bloqueosAgenda) } as BloqueoAgenda,
+              { ...bloqueo, id: nuevoId("bl", s.datos.bloqueosAgenda) },
             ],
           },
         })),
