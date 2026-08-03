@@ -173,6 +173,36 @@
   }
 }
 
+/* Impresión: sale solo la hoja de ruta, sin nav ni el resto de la pantalla.
+   Se oculta todo por visibilidad —no por display— para que los ancestros del
+   bloque sigan participando del layout y este se pueda posicionar. */
+@media print {
+  body:has(#hoja-ruta) * {
+    visibility: hidden;
+  }
+
+  body:has(#hoja-ruta) #hoja-ruta,
+  body:has(#hoja-ruta) #hoja-ruta * {
+    visibility: visible;
+  }
+
+  #hoja-ruta {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  @page {
+    margin: 1.2cm;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
