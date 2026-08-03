@@ -1,26 +1,185 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* El tema oscuro no está en el alcance del producto. Se deja el variant apuntando
+   a una clase que nunca se aplica para que las utilidades `dark:` de shadcn
+   queden inertes en vez de reaccionar a la preferencia del sistema. */
+@custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Paleta Rutero — sección 11 de SPEC.md */
+  --base: #0f1720; /* fondo de superficies oscuras (nav, dashboard) */
+  --surface: #ffffff; /* tablas y formularios */
+  --ink: #1a2430; /* texto principal */
+  --signal: #f2a413; /* acción primaria — ámbar de señalética vial */
+  --go: #12a594; /* confirmado, pago liberado */
+  --stop: #d9432f; /* vencido, cancelado, disputa */
+  --meta: #6b7a8c; /* metadata */
+
+  /* Tonos de apoyo derivados de la paleta */
+  --base-soft: #1c2833; /* separadores y hover sobre superficies oscuras */
+  --signal-soft: #fdf3e0; /* fondo de badge ámbar */
+  --go-soft: #e3f5f3; /* fondo de badge verde */
+  --stop-soft: #fbe9e6; /* fondo de badge rojo */
+  --line: #dfe5ea; /* borde por defecto sobre superficie clara */
+
+  /* Mapeo a los tokens de shadcn */
+  --background: var(--surface);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --popover: var(--surface);
+  --popover-foreground: var(--ink);
+  --primary: var(--signal);
+  --primary-foreground: var(--ink);
+  --secondary: #eef2f5;
+  --secondary-foreground: var(--ink);
+  --muted: #f4f6f8;
+  --muted-foreground: var(--meta);
+  --accent: #eef2f5;
+  --accent-foreground: var(--ink);
+  --destructive: var(--stop);
+  --border: var(--line);
+  --input: var(--line);
+  /* El ámbar no alcanza 3:1 contra el blanco, así que el anillo de foco usa
+     el tinta para que se vea sobre formularios y tablas. */
+  --ring: var(--ink);
+  --radius: 0.375rem;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Colores propios de Rutero, disponibles como bg-signal, text-go, border-stop… */
+  --color-base: var(--base);
+  --color-base-soft: var(--base-soft);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-signal: var(--signal);
+  --color-signal-soft: var(--signal-soft);
+  --color-go: var(--go);
+  --color-go-soft: var(--go-soft);
+  --color-stop: var(--stop);
+  --color-stop-soft: var(--stop-soft);
+  --color-meta: var(--meta);
+  --color-line: var(--line);
+
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-archivo);
+  --font-mono: var(--font-jetbrains-mono);
+
+  /* Escala tipográfica. Los display son para rotulación: condensados,
+     apretados y en mayúsculas. */
+  --text-display-lg: 2.75rem;
+  --text-display-lg--line-height: 1;
+  --text-display-lg--letter-spacing: -0.02em;
+  --text-display-lg--font-weight: 700;
+
+  --text-display: 2rem;
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.015em;
+  --text-display--font-weight: 700;
+
+  --text-display-sm: 1.375rem;
+  --text-display-sm--line-height: 1.1;
+  --text-display-sm--letter-spacing: -0.01em;
+  --text-display-sm--font-weight: 700;
+
+  --text-eyebrow: 0.6875rem;
+  --text-eyebrow--line-height: 1.2;
+  --text-eyebrow--letter-spacing: 0.08em;
+  --text-eyebrow--font-weight: 600;
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Montos, patentes, códigos y fechas se alinean en columna dentro de las
+     tablas comparativas. */
+  .font-mono,
+  table {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Foco de teclado siempre visible, nunca solo por hover. */
+  :focus-visible {
+    @apply outline-ring outline-2 outline-offset-2;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* Rotulación de flota: condensada, alta y en mayúsculas. */
+  .font-display {
+    font-family: var(--font-display);
+    font-stretch: 87.5%;
+    text-transform: uppercase;
+  }
+
+  /* Superficie oscura: invierte los tokens para que los componentes de shadcn
+     se vean correctos dentro de la nav y los paneles oscuros. */
+  .surface-dark {
+    --background: var(--base);
+    --foreground: #eef2f5;
+    --card: var(--base-soft);
+    --card-foreground: #eef2f5;
+    --popover: var(--base-soft);
+    --popover-foreground: #eef2f5;
+    --secondary: var(--base-soft);
+    --secondary-foreground: #eef2f5;
+    --muted: var(--base-soft);
+    --muted-foreground: #93a3b3;
+    --accent: var(--base-soft);
+    --accent-foreground: #eef2f5;
+    --border: #2a3743;
+    --input: #2a3743;
+    --ring: var(--signal);
+    color: #eef2f5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
