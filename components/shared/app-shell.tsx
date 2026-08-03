@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { CentroNotificaciones } from "@/components/shared/centro-notificaciones";
 import { cn } from "@/lib/utils";
 import {
   INICIO_POR_ROL,
@@ -80,6 +81,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               {rolActivo ? "Estás viendo la app como" : "Entra como"}
             </span>
             <SwitchRol rolActivo={rolActivo} />
+            {rolActivo && <CentroNotificaciones rol={rolActivo} />}
           </div>
         </div>
 
