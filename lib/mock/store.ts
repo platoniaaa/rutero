@@ -140,6 +140,10 @@ type Acciones = {
   ) => Id;
   responderGrupo: (oferta: Omit<OfertaGrupo, "id" | "createdAt" | "estado">) => void;
   adjudicarGrupo: (ofertaGrupoId: Id) => void;
+  /** La agencia deposita la comisión del transportista en escrow. */
+  pagarEscrowReferido: (referidoId: Id) => void;
+  /** Tour completado: se libera la comisión menos el fee de Rutero. */
+  liberarReferido: (referidoId: Id) => void;
   enlazarGrupoConViaje: (referidoId: Id, viajeId: Id) => void;
 
   // --- Verificación y configuración ---
@@ -739,6 +743,32 @@ export const useRutero = create<RuteroState>()(
           },
         }));
       },
+
+      pagarEscrowReferido: (referidoId) =>
+        set((s) => ({
+          datos: {
+            ...s.datos,
+            referidos: s.datos.referidos.map((r) =>
+              r.id === referidoId ? { ...r, estado: "pago_retenido" as const } : r,
+            ),
+          },
+        })),
+
+      liberarReferido: (referidoId) =>
+        set((s) => {
+          const referido = s.datos.referidos.find((r) => r.id === referidoId);
+          return {
+            datos: {
+              ...s.datos,
+              referidos: s.datos.referidos.map((r) =>
+                r.id === referidoId ? { ...r, estado: "liberada" as const } : r,
+              ),
+              grupos: s.datos.grupos.map((g) =>
+                g.id === referido?.grupoId ? { ...g, estado: "cerrado" as const } : g,
+              ),
+            },
+          };
+        }),
 
       enlazarGrupoConViaje: (referidoId, viajeId) =>
         set((s) => ({
