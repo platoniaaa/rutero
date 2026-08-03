@@ -10,6 +10,7 @@ import { ChatViaje } from "@/components/shared/chat-viaje";
 import { EncabezadoPagina } from "@/components/shared/encabezado-pagina";
 import { AccionesViaje, LineaEstados } from "@/components/shared/estado-viaje";
 import { ListaCargando, ListaError } from "@/components/shared/estado-lista";
+import { PanelCalificaciones } from "@/components/shared/panel-calificaciones";
 import { PanelEscrow } from "@/components/shared/panel-escrow";
 import { PlacaPatente } from "@/components/shared/placa-patente";
 import { Button } from "@/components/ui/button";
@@ -220,6 +221,13 @@ export default function DetalleViajeAgenciaPage({
             pasajeros={pasajeros}
             cupos={oferta.cantidadPasajeros}
             editable={editable}
+          />
+
+          <PanelCalificaciones
+            viaje={viaje}
+            rol="agencia"
+            autorId={agenciaId}
+            ahora={ahora}
           />
 
           <ChatViaje

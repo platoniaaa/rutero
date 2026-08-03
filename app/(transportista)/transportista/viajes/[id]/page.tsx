@@ -10,6 +10,7 @@ import { DetalleOferta } from "@/components/shared/detalle-oferta";
 import { EncabezadoPagina } from "@/components/shared/encabezado-pagina";
 import { AccionesViaje, LineaEstados } from "@/components/shared/estado-viaje";
 import { ListaCargando, ListaError } from "@/components/shared/estado-lista";
+import { PanelCalificaciones } from "@/components/shared/panel-calificaciones";
 import { PanelEscrow } from "@/components/shared/panel-escrow";
 import { HojaRuta } from "@/components/transportista/hoja-ruta";
 import { Button } from "@/components/ui/button";
@@ -143,6 +144,15 @@ export default function DetalleViajeTransportistaPage({
               <DetalleOferta oferta={oferta} ahora={ahora} />
             </TabsContent>
           </Tabs>
+
+          <div className="print:hidden">
+            <PanelCalificaciones
+              viaje={viaje}
+              rol="transportista"
+              autorId={carrierId}
+              ahora={ahora}
+            />
+          </div>
 
           <div className="print:hidden">
             <ChatViaje

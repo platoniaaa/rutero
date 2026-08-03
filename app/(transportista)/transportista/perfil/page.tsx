@@ -1,18 +1,29 @@
 "use client";
 
 import Link from "next/link";
-import { BadgeCheck, Mail, MapPin, Phone, ShieldCheck } from "lucide-react";
+import { BadgeCheck, Mail, MapPin, Phone, ShieldCheck, Star } from "lucide-react";
 
 import { BadgeEstado } from "@/components/shared/badge-estado";
+import { TarjetaCalificacion } from "@/components/shared/calificar";
 import { EncabezadoPagina, Metrica } from "@/components/shared/encabezado-pagina";
-import { ListaCargando, ListaError } from "@/components/shared/estado-lista";
+import {
+  ListaCargando,
+  ListaError,
+  ListaVacia,
+} from "@/components/shared/estado-lista";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
+  agencia as buscarAgencia,
+  calificacionesDeViaje,
+  calificacionesRecibidas,
   documentosDelTransportista,
-  resumirDocumentos,
   flotaDe,
+  oferta as buscarOferta,
+  resumirDocumentos,
   transportista as buscarTransportista,
+  viaje as buscarViaje,
+  viajesPorCalificar,
 } from "@/lib/mock/selectores";
 import { useAhora, useDatos, useSesion } from "@/lib/mock/use-datos";
 import { TONO_VERIFICACION } from "@/lib/ui/estados";
@@ -21,7 +32,7 @@ import {
   formatearRut,
   formatearTelefono,
 } from "@/lib/utils/format";
-import { COMISION_VIAJE_PCT } from "@/lib/utils/rules";
+import { COMISION_VIAJE_PCT, calificacionesVisibles } from "@/lib/utils/rules";
 
 export default function PerfilTransportistaPage() {
   const { datos, cargando } = useDatos();
@@ -52,6 +63,8 @@ export default function PerfilTransportistaPage() {
     documentosDelTransportista(datos, carrierId),
     ahora,
   );
+  const recibidas = calificacionesRecibidas(datos, carrierId);
+  const pendientes = viajesPorCalificar(datos, carrierId, "transportista");
   const verificada = cuenta.estadoVerificacion === "verificada";
   const puedePostular = verificada && resumen.vencidos === 0;
 
@@ -198,6 +211,57 @@ export default function PerfilTransportistaPage() {
             </dd>
           </div>
         </dl>
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="flex items-center gap-2 font-display text-display-sm text-ink">
+            <Star className="size-5 text-signal" aria-hidden />
+            Calificaciones recibidas
+          </h2>
+          {pendientes.length > 0 && (
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/transportista/viajes">
+                Te faltan {pendientes.length} por calificar
+              </Link>
+            </Button>
+          )}
+        </div>
+
+        {recibidas.length === 0 ? (
+          <ListaVacia
+            icono={Star}
+            titulo="Todavía no te califican"
+            detalle="Después de cada viaje completado, la agencia te califica en puntualidad, estado del vehículo, trato y comunicación."
+          />
+        ) : (
+          <ul className="flex flex-col gap-3">
+            {recibidas.map((c) => {
+              const viaje = buscarViaje(datos, c.viajeId);
+              const oferta = viaje ? buscarOferta(datos, viaje.ofertaId) : undefined;
+              const visible = calificacionesVisibles(
+                calificacionesDeViaje(datos, c.viajeId),
+                viaje?.finalizadoEn,
+                ahora,
+              );
+              return (
+                <li key={c.id}>
+                  {oferta && (
+                    <p className="mb-1 text-xs text-meta">
+                      <span className="font-mono">{oferta.codigo}</span> ·{" "}
+                      {oferta.titulo}
+                    </p>
+                  )}
+                  <TarjetaCalificacion
+                    calificacion={c}
+                    autor={buscarAgencia(datos, c.autorId)?.razonSocial ?? "Agencia"}
+                    visible={visible}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </section>
     </div>
   );
