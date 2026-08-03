@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Send, XCircle } from "lucide-react";
 import { toast } from "sonner";
 
+import { BandejaRespuestas } from "@/components/agencia/bandeja-respuestas";
 import { BadgeEstado } from "@/components/shared/badge-estado";
 import { DetalleOferta } from "@/components/shared/detalle-oferta";
 import { EncabezadoPagina } from "@/components/shared/encabezado-pagina";
@@ -157,18 +158,19 @@ export default function DetalleOfertaAgenciaPage({
 
       <DetalleOferta oferta={oferta} ahora={ahora} />
 
-      {/* La bandeja de respuestas comparables llega en el Hito 4. */}
-      <section className="rounded-lg border border-line bg-surface p-5">
-        <h2 className="font-display text-display-sm text-ink">
-          Respuestas ({respuestas.length})
-        </h2>
-        <p className="mt-2 text-sm text-meta">
-          {respuestas.length === 0
-            ? abierta
-              ? "Todavía no llegan respuestas. Suben un 40% cuando el presupuesto referencial está a precio de mercado."
-              : "Esta oferta no recibió respuestas."
-            : "La bandeja comparable para adjudicar se construye en el hito 4."}
-        </p>
+      <section className="flex flex-col gap-3">
+        <div>
+          <h2 className="font-display text-display-sm text-ink">
+            Respuestas ({respuestas.length})
+          </h2>
+          {respuestas.length > 0 && abierta && (
+            <p className="mt-1 text-sm text-meta">
+              Compara el monto por pasajero, el rating y el vehículo propuesto.
+              Adjudicar rechaza el resto automáticamente.
+            </p>
+          )}
+        </div>
+        <BandejaRespuestas oferta={oferta} respuestas={respuestas} />
       </section>
     </div>
   );

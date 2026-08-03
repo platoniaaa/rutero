@@ -7,13 +7,14 @@ import { ArrowLeft, Building2, Star } from "lucide-react";
 import { DetalleOferta } from "@/components/shared/detalle-oferta";
 import { EncabezadoPagina } from "@/components/shared/encabezado-pagina";
 import { ListaCargando, ListaError } from "@/components/shared/estado-lista";
+import { PanelPostulacion } from "@/components/transportista/panel-postulacion";
 import { Button } from "@/components/ui/button";
 import {
   agencia as buscarAgencia,
-  evaluarOfertaParaCarrier,
   oferta as buscarOferta,
 } from "@/lib/mock/selectores";
 import { useAhora, useDatos, useSesion } from "@/lib/mock/use-datos";
+import { ofertaExpirada } from "@/lib/utils/rules";
 
 export default function DetalleOfertaTransportistaPage({
   params,
@@ -55,7 +56,9 @@ export default function DetalleOfertaTransportistaPage({
   }
 
   const agencia = buscarAgencia(datos, oferta.agenciaId);
-  const evaluacion = evaluarOfertaParaCarrier(datos, oferta.id, carrierId);
+  const abierta =
+    (oferta.estado === "publicada" || oferta.estado === "con_respuestas") &&
+    !ofertaExpirada(oferta, ahora);
 
   return (
     <div className="flex flex-col gap-6">
@@ -100,23 +103,17 @@ export default function DetalleOfertaTransportistaPage({
         </section>
       )}
 
-      {evaluacion.motivoAtenuada && (
-        <div
-          role="status"
-          className="rounded-lg border border-line bg-muted px-4 py-3 text-sm text-ink/80"
-        >
-          {evaluacion.motivoAtenuada}
-        </div>
-      )}
-
       <DetalleOferta oferta={oferta} ahora={ahora} />
 
-      {/* Aceptar / contraofertar llega en el Hito 4. */}
-      <section className="rounded-lg border border-dashed border-line bg-muted p-5 text-center">
-        <p className="text-sm text-meta">
-          Aceptar al precio o contraofertar se habilita en el hito 4.
-        </p>
-      </section>
+      {abierta ? (
+        <PanelPostulacion oferta={oferta} carrierId={carrierId} ahora={ahora} />
+      ) : (
+        <section className="rounded-lg border border-line bg-muted p-5 text-center">
+          <p className="text-sm text-meta">
+            Esta oferta ya no recibe respuestas.
+          </p>
+        </section>
+      )}
     </div>
   );
 }
