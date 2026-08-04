@@ -47,7 +47,7 @@ export async function comprimirImagen(archivo: File): Promise<ResultadoImagen> {
   if (dataUrl.length * 0.75 > PESO_MAXIMO_BYTES) {
     return {
       ok: false,
-      motivo: "La foto quedó muy pesada para guardarla en la demo. Prueba con una más chica.",
+      motivo: "La foto quedó muy pesada. Prueba con una más chica.",
     };
   }
 

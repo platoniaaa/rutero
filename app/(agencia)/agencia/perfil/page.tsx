@@ -36,7 +36,7 @@ export default function PerfilAgenciaPage() {
         <EncabezadoPagina seccion="Agencia" titulo="Perfil de la agencia" />
         <ListaError
           titulo="No encontramos esta cuenta"
-          detalle="La cuenta de la demo no está en los datos guardados. Reinicia la demo desde el panel de admin para volver al estado inicial."
+          detalle="No pudimos cargar los datos de tu cuenta. Recarga la página para volver a intentarlo."
         />
       </div>
     );

@@ -101,7 +101,7 @@ export default function LandingPage() {
             </Button>
             <Button asChild>
               <Link href="/entrar">
-                Ver la demo
+                Entrar
                 <ArrowRight className="size-4" aria-hidden />
               </Link>
             </Button>
@@ -423,19 +423,24 @@ export default function LandingPage() {
         <div className="mx-auto w-full max-w-[1200px] px-4">
           <div className="rounded-2xl border border-line bg-base px-6 py-12 text-center lg:px-16">
             <h2 className="font-titular text-[clamp(1.9rem,3.4vw,2.75rem)] leading-[1.05] font-bold text-white">
-              Rutero está en construcción
+              Tu próximo viaje empieza acá
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-white/70">
-              Esto es un prototipo navegable, con datos de demostración. Lo
-              estamos mostrando a agencias y transportistas para ajustar el
-              modelo antes de abrirlo. Si trabajas en el rubro, entra y dinos qué
-              está mal.
+              Publica en dos minutos y recibe respuestas de transportistas con
+              los papeles al día. Sin costo para la agencia, con el pago
+              respaldado hasta que el grupo vuelve.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Button size="lg" asChild>
                 <Link href="/entrar">
-                  Entrar a la demo
+                  Publicar mi primer viaje
                   <ArrowRight className="size-4" aria-hidden />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <Link href="#transportistas">
+                  <Truck className="size-4" aria-hidden />
+                  Sumar mi van
                 </Link>
               </Button>
             </div>
@@ -454,16 +459,13 @@ export default function LandingPage() {
           </div>
           <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/60">
             <Link href="/entrar" className="hover:text-white">
-              Demo
+              Entrar
             </Link>
             <Link href="#como-funciona" className="hover:text-white">
               Cómo funciona
             </Link>
             <Link href="#transportistas" className="hover:text-white">
               Transportistas
-            </Link>
-            <Link href="/styleguide" className="hover:text-white">
-              Sistema de diseño
             </Link>
           </nav>
         </div>

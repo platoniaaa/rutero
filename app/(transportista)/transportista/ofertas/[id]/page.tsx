@@ -43,7 +43,7 @@ export default function DetalleOfertaTransportistaPage({
         <EncabezadoPagina seccion="Transportista" titulo="Detalle de la oferta" />
         <ListaError
           titulo="Esta oferta no existe"
-          detalle="Puede que haya expirado o que la demo se haya reiniciado."
+          detalle="Puede que haya expirado o que la agencia la haya cancelado."
         />
         <Button variant="outline" className="w-fit" asChild>
           <Link href="/transportista/ofertas">

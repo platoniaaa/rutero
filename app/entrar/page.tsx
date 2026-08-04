@@ -1,72 +1,84 @@
-import Link from "next/link";
-import { ArrowLeft, ArrowRight, Palette } from "lucide-react";
+"use client";
 
+import Link from "next/link";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+
+import { CenefaCordillera } from "@/components/marketing/paisajes";
+import {
+  agencia as buscarAgencia,
+  transportista as buscarTransportista,
+} from "@/lib/mock/selectores";
 import { INICIO_POR_ROL, ROLES, type Rol } from "@/lib/navegacion";
+import { useDatos, useSesion } from "@/lib/mock/use-datos";
 
 const DESCRIPCION_ROL: Record<Rol, string> = {
-  agencia:
-    "Publica ofertas de viaje, compara respuestas, adjudica y paga. Es el lado que genera la demanda.",
-  transportista:
-    "Recibe ofertas que calzan con tu flota, acepta o contraoferta, y administra vehículos, conductores y agenda.",
-  admin:
-    "Verifica documentos, resuelve disputas, ajusta comisiones y mira las métricas del marketplace.",
+  agencia: "Publica viajes, compara respuestas y paga con respaldo",
+  transportista: "Recibe ofertas que calzan con tu flota y tu agenda",
+  admin: "Verificación, disputas y métricas de la plataforma",
 };
 
 export default function EntrarPage() {
+  const { datos, cargando } = useDatos();
+  const sesion = useSesion();
+
+  const nombreDe = (rol: Rol): string => {
+    if (cargando) return "—";
+    if (rol === "agencia") {
+      return buscarAgencia(datos, sesion.agenciaId)?.razonSocial ?? "Agencia";
+    }
+    if (rol === "transportista") {
+      return buscarTransportista(datos, sesion.carrierId)?.nombre ?? "Transportista";
+    }
+    return "Equipo Rutero";
+  };
+
   return (
-    <div className="flex flex-col gap-8 py-6">
-      <header className="max-w-2xl">
-        <Link
-          href="/"
-          className="mb-4 inline-flex items-center gap-1.5 text-sm text-meta underline-offset-4 hover:text-ink hover:underline"
-        >
-          <ArrowLeft className="size-4" aria-hidden />
-          Volver al inicio
-        </Link>
-        <p className="text-eyebrow font-display text-meta">Prototipo · Fase 1</p>
-        <h1 className="font-display text-display-lg text-ink">
-          Elige desde qué lado mirar
+    <div className="mx-auto flex w-full max-w-md flex-col gap-6 py-10">
+      <header className="text-center">
+        <p className="font-display text-display text-ink">Rutero</p>
+        <h1 className="mt-4 font-titular text-[1.75rem] leading-tight font-bold text-ink">
+          Continúa con tu cuenta
         </h1>
-        <p className="mt-3 text-meta">
-          Este prototipo no tiene login: se cambia de rol acá o en la barra
-          superior, en cualquier momento.
+        <p className="mt-2 text-sm text-meta">
+          Elige con qué perfil quieres entrar.
         </p>
       </header>
 
-      <ul className="grid gap-4 md:grid-cols-3">
-        {ROLES.map(({ rol, etiqueta, icono: Icono }) => (
+      <CenefaCordillera className="h-6 text-line" />
+
+      <ul className="flex flex-col gap-3">
+        {ROLES.map(({ rol, icono: Icono }) => (
           <li key={rol}>
             <Link
               href={INICIO_POR_ROL[rol]}
-              className="group flex h-full flex-col gap-3 rounded-lg border border-line bg-surface p-5 transition-colors hover:border-signal"
+              className="group flex items-center gap-3 rounded-lg border border-line bg-surface p-4 transition-colors hover:border-signal"
             >
-              <span className="flex size-11 items-center justify-center rounded bg-signal-soft text-signal-ink">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-signal-soft text-signal-ink">
                 <Icono className="size-5" aria-hidden />
               </span>
-              <span className="font-display text-display-sm text-ink">
-                {etiqueta}
+              <span className="min-w-0 flex-1">
+                <span className="block truncate font-medium text-ink">
+                  {nombreDe(rol)}
+                </span>
+                <span className="block truncate text-sm text-meta">
+                  {DESCRIPCION_ROL[rol]}
+                </span>
               </span>
-              <span className="flex-1 text-sm text-meta">
-                {DESCRIPCION_ROL[rol]}
-              </span>
-              <span className="flex items-center gap-1.5 text-sm font-medium text-ink">
-                Entrar
-                <ArrowRight
-                  className="size-4 transition-transform group-hover:translate-x-0.5"
-                  aria-hidden
-                />
-              </span>
+              <ArrowRight
+                className="size-4 shrink-0 text-meta transition-transform group-hover:translate-x-0.5"
+                aria-hidden
+              />
             </Link>
           </li>
         ))}
       </ul>
 
       <Link
-        href="/styleguide"
-        className="flex w-fit items-center gap-2 text-sm text-meta underline-offset-4 hover:text-ink hover:underline"
+        href="/"
+        className="mx-auto flex w-fit items-center gap-1.5 text-sm text-meta underline-offset-4 hover:text-ink hover:underline"
       >
-        <Palette className="size-4" aria-hidden />
-        Ver la guía de estilos
+        <ArrowLeft className="size-4" aria-hidden />
+        Volver al inicio
       </Link>
     </div>
   );

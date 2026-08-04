@@ -68,7 +68,7 @@ export function ListaVacia({
 /** Estado de error. Dice qué pasó y cómo salir, sin pedir disculpas. */
 export function ListaError({
   titulo = "No pudimos cargar esta lista",
-  detalle = "Los datos de la demo viven en tu navegador y no se pudieron leer. Recarga la página para volver a intentarlo.",
+  detalle = "No pudimos leer la información en este momento. Recarga la página para volver a intentarlo.",
   onReintentar,
   className,
 }: {

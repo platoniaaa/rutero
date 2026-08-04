@@ -50,7 +50,7 @@ export async function prepararAdjunto(archivo: File): Promise<ResultadoAdjunto> 
   if (archivo.size > PESO_MAXIMO_BYTES) {
     return {
       ok: false,
-      motivo: `${archivo.name} pesa ${formatearPeso(archivo.size)} y el máximo del prototipo es ${formatearPeso(PESO_MAXIMO_BYTES)}. Sube una versión más liviana o pega los detalles en el texto.`,
+      motivo: `${archivo.name} pesa ${formatearPeso(archivo.size)} y el máximo permitido es ${formatearPeso(PESO_MAXIMO_BYTES)}. Sube una versión más liviana o pega los detalles en el texto.`,
     };
   }
 

@@ -61,7 +61,7 @@ export default function DetalleViajeTransportistaPage({
         <EncabezadoPagina seccion="Transportista" titulo="Detalle del viaje" />
         <ListaError
           titulo="Este viaje no existe"
-          detalle="Puede que el enlace esté malo o que la demo se haya reiniciado."
+          detalle="Puede que el enlace esté malo o que el viaje ya no exista."
         />
         <Button variant="outline" className="w-fit" asChild>
           <Link href="/transportista/viajes">

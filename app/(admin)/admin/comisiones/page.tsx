@@ -220,30 +220,32 @@ export default function ComisionesPage() {
         </div>
       </section>
 
+      {/* Mantenimiento: el reinicio vive solo acá, en una pantalla interna que
+          ni la agencia ni el transportista ven. */}
       <section className="rounded-lg border border-line bg-surface p-5">
-        <h2 className="font-display text-display-sm text-ink">Datos de la demo</h2>
+        <h2 className="font-display text-display-sm text-ink">Mantenimiento</h2>
         <p className="mt-1 max-w-2xl text-sm text-meta">
-          Todo lo que hagas en el prototipo se guarda en tu navegador. Reiniciar
-          devuelve el seed original: las ofertas, los viajes y los pagos vuelven a
-          su estado inicial.
+          Restablece la plataforma a su estado inicial. Se pierden las ofertas,
+          adjudicaciones, pagos, mensajes y calificaciones registrados en este
+          equipo.
         </p>
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="outline" className="mt-4">
               <RotateCcw className="size-4" aria-hidden />
-              Reiniciar demo
+              Restablecer datos
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle className="font-display text-display-sm">
-                ¿Reiniciar la demo?
+                ¿Restablecer los datos?
               </AlertDialogTitle>
               <AlertDialogDescription>
-                Se pierde todo lo que hayas hecho: ofertas publicadas,
-                adjudicaciones, pagos, mensajes y calificaciones. Vuelve el seed
-                original.
+                Se pierde todo lo registrado en este equipo: ofertas publicadas,
+                adjudicaciones, pagos, mensajes y calificaciones. Esto no se
+                puede deshacer.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
@@ -251,10 +253,10 @@ export default function ComisionesPage() {
               <AlertDialogAction
                 onClick={() => {
                   reiniciarDemo();
-                  toast.success("Demo reiniciada");
+                  toast.success("Datos restablecidos");
                 }}
               >
-                Reiniciar
+                Restablecer
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
