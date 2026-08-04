@@ -8,21 +8,29 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Paleta Rutero — sección 11 de SPEC.md */
-  --base: #0f1720; /* fondo de superficies oscuras (nav, dashboard) */
+  /* Paleta Cordillera. Todos los pares de texto sobre fondo pasan WCAG AA. */
+  --base: #0b3c5d; /* azul cordillera — nav y superficies oscuras */
   --surface: #ffffff; /* tablas y formularios */
-  --ink: #1a2430; /* texto principal */
-  --signal: #f2a413; /* acción primaria — ámbar de señalética vial */
-  --go: #12a594; /* confirmado, pago liberado */
-  --stop: #d9432f; /* vencido, cancelado, disputa */
-  --meta: #6b7a8c; /* metadata */
+  --nieve: #f7f9fb; /* superficie alterna, secciones de la landing */
+  --ink: #14283a; /* texto principal */
+  --signal: #f4a259; /* acción primaria — luz de atardecer en la montaña */
+  --go: #1d7874; /* confirmado, pago liberado — verde de lago */
+  --stop: #c0492f; /* vencido, cancelado, disputa */
+  --meta: #46596b; /* metadata — gris piedra */
 
   /* Tonos de apoyo derivados de la paleta */
-  --base-soft: #1c2833; /* separadores y hover sobre superficies oscuras */
-  --signal-soft: #fdf3e0; /* fondo de badge ámbar */
-  --go-soft: #e3f5f3; /* fondo de badge verde */
-  --stop-soft: #fbe9e6; /* fondo de badge rojo */
-  --line: #dfe5ea; /* borde por defecto sobre superficie clara */
+  --base-soft: #12496e; /* separadores y hover sobre superficies oscuras */
+  --base-deep: #072a41; /* pie de página y bloques de mayor peso */
+  --signal-soft: #fdf0e2; /* fondo de badge ámbar */
+  --go-soft: #e2f1f0; /* fondo de badge verde */
+  --stop-soft: #f9e8e4; /* fondo de badge rojo */
+  --line: #dbe3ea; /* borde por defecto sobre superficie clara */
+
+  /* Versiones oscuras para texto sobre los fondos suaves. El color puro no
+     alcanza contraste ahí, así que cada uno tiene su tono de tinta. */
+  --signal-ink: #8a4b12;
+  --go-ink: #14544f;
+  --stop-ink: #8e3423;
 
   /* Mapeo a los tokens de shadcn */
   --background: var(--surface);
@@ -71,14 +79,19 @@
   /* Colores propios de Rutero, disponibles como bg-signal, text-go, border-stop… */
   --color-base: var(--base);
   --color-base-soft: var(--base-soft);
+  --color-base-deep: var(--base-deep);
   --color-surface: var(--surface);
+  --color-nieve: var(--nieve);
   --color-ink: var(--ink);
   --color-signal: var(--signal);
   --color-signal-soft: var(--signal-soft);
+  --color-signal-ink: var(--signal-ink);
   --color-go: var(--go);
   --color-go-soft: var(--go-soft);
+  --color-go-ink: var(--go-ink);
   --color-stop: var(--stop);
   --color-stop-soft: var(--stop-soft);
+  --color-stop-ink: var(--stop-ink);
   --color-meta: var(--meta);
   --color-line: var(--line);
 
@@ -151,25 +164,33 @@
     text-transform: uppercase;
   }
 
+  /* Misma familia condensada pero en caja natural. Para los titulares largos
+     de la landing, donde la versal corrida cansa la lectura. */
+  .font-titular {
+    font-family: var(--font-display);
+    font-stretch: 87.5%;
+    letter-spacing: -0.015em;
+  }
+
   /* Superficie oscura: invierte los tokens para que los componentes de shadcn
      se vean correctos dentro de la nav y los paneles oscuros. */
   .surface-dark {
     --background: var(--base);
-    --foreground: #eef2f5;
+    --foreground: var(--nieve);
     --card: var(--base-soft);
-    --card-foreground: #eef2f5;
+    --card-foreground: var(--nieve);
     --popover: var(--base-soft);
-    --popover-foreground: #eef2f5;
+    --popover-foreground: var(--nieve);
     --secondary: var(--base-soft);
-    --secondary-foreground: #eef2f5;
+    --secondary-foreground: var(--nieve);
     --muted: var(--base-soft);
-    --muted-foreground: #93a3b3;
+    --muted-foreground: #9db4c7;
     --accent: var(--base-soft);
-    --accent-foreground: #eef2f5;
-    --border: #2a3743;
-    --input: #2a3743;
+    --accent-foreground: var(--nieve);
+    --border: #1e5980;
+    --input: #1e5980;
     --ring: var(--signal);
-    color: #eef2f5;
+    color: var(--nieve);
   }
 }
 

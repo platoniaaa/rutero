@@ -254,7 +254,7 @@ export default function AdminViajesPage() {
                     <TableCell className="text-right font-mono tabular-nums">
                       {formatearCLP(v.montoFinal)}
                     </TableCell>
-                    <TableCell className="text-right font-mono tabular-nums text-[#0b6b60]">
+                    <TableCell className="text-right font-mono tabular-nums text-go-ink">
                       {formatearCLP(v.comision)}
                     </TableCell>
                     <TableCell>

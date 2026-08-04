@@ -5,9 +5,9 @@ export type TonoEstado = "neutro" | "espera" | "activo" | "listo" | "alerta";
 const TONOS: Record<TonoEstado, string> = {
   neutro: "border-line bg-muted text-meta",
   espera: "border-line bg-secondary text-ink",
-  activo: "border-signal/40 bg-signal-soft text-[#8a5b00]",
-  listo: "border-go/40 bg-go-soft text-[#0b6b60]",
-  alerta: "border-stop/40 bg-stop-soft text-[#9c2f20]",
+  activo: "border-signal/40 bg-signal-soft text-signal-ink",
+  listo: "border-go/40 bg-go-soft text-go-ink",
+  alerta: "border-stop/40 bg-stop-soft text-stop-ink",
 };
 
 /**

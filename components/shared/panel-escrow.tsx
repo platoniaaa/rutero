@@ -32,7 +32,7 @@ export function PanelEscrow({
       icono: Wallet,
       titulo: rol === "agencia" ? "Falta pagar el escrow" : "Esperando el pago",
       tono: "border-signal/40 bg-signal-soft",
-      color: "text-[#8a5b00]",
+      color: "text-signal-ink",
     },
     retenido: {
       icono: Lock,
@@ -44,7 +44,7 @@ export function PanelEscrow({
       icono: CheckCircle2,
       titulo: "Pago liberado",
       tono: "border-go/40 bg-go-soft",
-      color: "text-[#0b6b60]",
+      color: "text-go-ink",
     },
     reembolsado: {
       icono: Wallet,
@@ -88,7 +88,7 @@ export function PanelEscrow({
           <dt className="font-medium text-ink">
             {rol === "agencia" ? "Recibe el transportista" : "Recibes"}
           </dt>
-          <dd className="font-mono font-medium tabular-nums text-[#0b6b60]">
+          <dd className="font-mono font-medium tabular-nums text-go-ink">
             {formatearCLP(viaje.montoTransportista)}
           </dd>
         </div>

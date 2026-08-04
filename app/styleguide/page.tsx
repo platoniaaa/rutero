@@ -30,13 +30,36 @@ export const metadata: Metadata = {
 };
 
 const PALETA = [
-  { nombre: "base", valor: "#0F1720", uso: "Superficies oscuras: nav, paneles" },
+  { nombre: "base", valor: "#0B3C5D", uso: "Azul cordillera: nav y paneles" },
   { nombre: "surface", valor: "#FFFFFF", uso: "Tablas y formularios" },
-  { nombre: "ink", valor: "#1A2430", uso: "Texto principal" },
-  { nombre: "signal", valor: "#F2A413", uso: "Acción primaria" },
-  { nombre: "go", valor: "#12A594", uso: "Confirmado, pago liberado" },
-  { nombre: "stop", valor: "#D9432F", uso: "Vencido, cancelado, disputa" },
-  { nombre: "meta", valor: "#6B7A8C", uso: "Metadata" },
+  { nombre: "nieve", valor: "#F7F9FB", uso: "Superficie alterna" },
+  { nombre: "ink", valor: "#14283A", uso: "Texto principal" },
+  { nombre: "signal", valor: "#F4A259", uso: "Acción primaria: luz de atardecer" },
+  { nombre: "go", valor: "#1D7874", uso: "Confirmado, pago liberado" },
+  { nombre: "stop", valor: "#C0492F", uso: "Vencido, cancelado, disputa" },
+  { nombre: "meta", valor: "#46596B", uso: "Metadata: gris piedra" },
+];
+
+/** Tonos de texto para los fondos suaves de cada badge. */
+const TINTAS = [
+  {
+    nombre: "signal-ink",
+    valor: "#8A4B12",
+    sobre: "signal-soft",
+    clases: "bg-signal-soft text-signal-ink",
+  },
+  {
+    nombre: "go-ink",
+    valor: "#14544F",
+    sobre: "go-soft",
+    clases: "bg-go-soft text-go-ink",
+  },
+  {
+    nombre: "stop-ink",
+    valor: "#8E3423",
+    sobre: "stop-soft",
+    clases: "bg-stop-soft text-stop-ink",
+  },
 ];
 
 function Seccion({
@@ -73,7 +96,10 @@ export default function StyleguidePage() {
         </p>
       </header>
 
-      <Seccion titulo="Paleta" descripcion="Sección 11 de SPEC.md.">
+      <Seccion
+        titulo="Paleta Cordillera"
+        descripcion="Sección 11 de SPEC.md. Todos los pares de texto sobre fondo pasan WCAG AA."
+      >
         <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {PALETA.map((color) => (
             <li
@@ -92,6 +118,29 @@ export default function StyleguidePage() {
             </li>
           ))}
         </ul>
+
+        <div>
+          <p className="text-eyebrow font-display text-meta">
+            Tintas para fondos suaves
+          </p>
+          <p className="mt-1 mb-3 max-w-2xl text-sm text-meta">
+            El color puro no alcanza contraste sobre su propio fondo suave, así
+            que cada uno tiene su versión oscura para texto.
+          </p>
+          <ul className="flex flex-wrap gap-3">
+            {TINTAS.map((t) => (
+              <li
+                key={t.nombre}
+                className={`rounded-lg border border-line px-4 py-3 ${t.clases}`}
+              >
+                <p className="font-mono text-sm font-medium">{t.nombre}</p>
+                <p className="font-mono text-xs">
+                  {t.valor} sobre {t.sobre}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
       </Seccion>
 
       <Seccion

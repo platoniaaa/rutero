@@ -177,7 +177,7 @@ export default function DetalleViajeAgenciaPage({
                           {docsVehiculo.vencidos > 1 ? "s" : ""} sin vigencia
                         </span>
                       ) : (
-                        <span className="text-[#0b6b60]">Papeles al día</span>
+                        <span className="text-go-ink">Papeles al día</span>
                       )}
                     </p>
                   )}

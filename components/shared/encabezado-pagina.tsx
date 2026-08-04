@@ -50,9 +50,9 @@ export function Metrica({
 }) {
   const colorValor = {
     neutro: "text-ink",
-    signal: "text-[#8a5b00]",
-    go: "text-[#0b6b60]",
-    stop: "text-stop",
+    signal: "text-signal-ink",
+    go: "text-go-ink",
+    stop: "text-stop-ink",
   }[tono];
 
   return (

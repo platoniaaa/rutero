@@ -81,7 +81,7 @@ export function ChatViaje({
                 {formatearFecha(m.createdAt)}
               </span>
               {m.avisoFugaMostrado && (
-                <p className="flex max-w-[85%] items-start gap-1.5 rounded border border-signal/40 bg-signal-soft px-2 py-1 text-xs text-[#8a5b00]">
+                <p className="flex max-w-[85%] items-start gap-1.5 rounded border border-signal/40 bg-signal-soft px-2 py-1 text-xs text-signal-ink">
                   <Info className="mt-0.5 size-3 shrink-0" aria-hidden />
                   {AVISO_FUGA}
                 </p>
@@ -107,7 +107,7 @@ export function ChatViaje({
             {avisarFuga && (
               <p
                 role="status"
-                className="mt-2 flex items-start gap-2 rounded border border-signal/40 bg-signal-soft px-3 py-2 text-sm text-[#8a5b00]"
+                className="mt-2 flex items-start gap-2 rounded border border-signal/40 bg-signal-soft px-3 py-2 text-sm text-signal-ink"
               >
                 <Info className="mt-0.5 size-4 shrink-0" aria-hidden />
                 {AVISO_FUGA}

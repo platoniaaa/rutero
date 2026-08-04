@@ -292,21 +292,32 @@ Se puede recorrer completo, sin tocar código y sin pantallas muertas:
 
 ## 11. Dirección visual
 
-Esto es una herramienta de trabajo operacional, no una app de viajes bonita. La referencia mental es un despacho de flota, no Booking.com. Densa donde hay que comparar, legible bajo el sol, con targets de toque grandes.
+**Dos registros, según quién mira.**
 
-**Paleta**
+- **La landing pública** la ve alguien que llega por primera vez: una agencia evaluando si vale la pena, un furgonero al que le mandaron el link. Ahí el producto tiene que vender, y el paisaje chileno es el activo: cordillera, valle, costa.
+- **Las pantallas de trabajo** las mira alguien comparando ocho precios a las siete de la mañana. Ahí la referencia sigue siendo un despacho de flota, no Booking.com: densa donde hay que comparar, legible bajo el sol, con targets de toque grandes.
+
+La paleta es la misma en los dos registros; lo que cambia es la densidad y el peso de la imagen.
+
+**Paleta Cordillera**
 ```
---base:      #0F1720   fondo de superficies oscuras (nav, dashboard)
+--base:      #0B3C5D   azul cordillera — nav y superficies oscuras
 --surface:   #FFFFFF   tablas y formularios
---ink:       #1A2430   texto principal
---signal:    #F2A413   acción primaria — ámbar de señalética vial
---go:        #12A594   confirmado, pago liberado
---stop:      #D9432F   vencido, cancelado, disputa
---muted:     #6B7A8C   metadata
+--nieve:     #F7F9FB   superficie alterna, secciones de la landing
+--ink:       #14283A   texto principal
+--signal:    #F4A259   acción primaria — luz de atardecer en la montaña
+--go:        #1D7874   confirmado, pago liberado — verde de lago
+--stop:      #C0492F   vencido, cancelado, disputa
+--meta:      #46596B   metadata — gris piedra
 ```
+
+Cada color suave (`signal-soft`, `go-soft`, `stop-soft`) tiene su tinta oscura (`signal-ink`, `go-ink`, `stop-ink`) para el texto encima: el color puro no alcanza contraste sobre su propio fondo. **Todos los pares texto/fondo cumplen WCAG AA**, verificado sobre el render real, no a ojo.
+
+**Imágenes**
+Ilustraciones SVG propias de paisajes chilenos, no fotos de stock: pesan poco, escalan sin perder nitidez y no arrastran licencias de terceros. Viven en `components/marketing/paisajes.tsx` y están pensadas para que fotos reales de los viajes las reemplacen sin tocar el layout.
 
 **Tipografía**
-- Display / títulos: una grotesca condensada de peso alto — evoca la rotulación de flota. Sugerencia: `Archivo` o `Oswald`, usada con restricción.
+- Display / títulos: una grotesca condensada de peso alto — evoca la rotulación de flota. Sugerencia: `Archivo` o `Oswald`, usada con restricción. En versal corrida (`font-display`) para rótulos y etiquetas; en caja natural (`font-titular`) para los titulares largos de la landing, donde la versal cansa la lectura.
 - Cuerpo e interfaz: `Inter`.
 - Datos, patentes, montos y códigos: mono tabular — `JetBrains Mono` con `font-variant-numeric: tabular-nums`. Los montos en una tabla comparativa **tienen** que alinearse en la coma.
 

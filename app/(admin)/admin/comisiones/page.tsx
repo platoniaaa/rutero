@@ -130,7 +130,7 @@ export default function ComisionesPage() {
               </div>
               <div className="flex justify-between gap-4">
                 <dt className="text-meta">Comisión Rutero</dt>
-                <dd className="font-mono tabular-nums text-[#0b6b60]">
+                <dd className="font-mono tabular-nums text-go-ink">
                   {formatearCLP(dViaje.comision)}
                 </dd>
               </div>
@@ -174,7 +174,7 @@ export default function ComisionesPage() {
               </div>
               <div className="flex justify-between gap-4">
                 <dt className="text-meta">Comisión Rutero</dt>
-                <dd className="font-mono tabular-nums text-[#0b6b60]">
+                <dd className="font-mono tabular-nums text-go-ink">
                   {formatearCLP(dReferido.comision)}
                 </dd>
               </div>

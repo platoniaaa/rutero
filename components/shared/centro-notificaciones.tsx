@@ -36,10 +36,10 @@ const ICONO: Record<TipoNotificacion, React.ElementType> = {
 };
 
 const TONO: Partial<Record<TipoNotificacion, string>> = {
-  adjudicacion: "text-[#0b6b60]",
-  pago_liberado: "text-[#0b6b60]",
+  adjudicacion: "text-go-ink",
+  pago_liberado: "text-go-ink",
   documento_por_vencer: "text-stop",
-  recordatorio_viaje: "text-[#8a5b00]",
+  recordatorio_viaje: "text-signal-ink",
 };
 
 /**

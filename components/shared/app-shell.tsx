@@ -56,8 +56,11 @@ function SwitchRol({ rolActivo }: { rolActivo: Rol | null }) {
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
-  // La URL es la fuente de verdad del rol. En la portada y en la guía de
-  // estilos no hay rol encarnado, así que el switch va sin selección.
+  // La landing es pública y trae su propio encabezado.
+  if (pathname === "/") return <>{children}</>;
+
+  // La URL es la fuente de verdad del rol. En la pantalla de entrada y en la
+  // guía de estilos no hay rol encarnado, así que el switch va sin selección.
   const rolActivo = rolDesdeRuta(pathname);
   const items = rolActivo ? NAVEGACION[rolActivo] : [];
 

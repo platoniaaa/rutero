@@ -71,7 +71,7 @@ export function LineaEstados({ viaje }: { viaje: Viaje }) {
                 actual
                   ? "bg-signal font-medium text-ink"
                   : alcanzado
-                    ? "bg-go-soft text-[#0b6b60]"
+                    ? "bg-go-soft text-go-ink"
                     : "border border-line text-meta"
               }`}
             >

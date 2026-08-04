@@ -186,7 +186,7 @@ export default function FeedOfertasPage() {
               type="checkbox"
               checked={soloDisponibles}
               onChange={(e) => setSoloDisponibles(e.target.checked)}
-              className="size-4 accent-[#f2a413]"
+              className="size-4 accent-signal"
             />
             Solo disponibles
           </label>

@@ -1,67 +1,473 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Palette } from "lucide-react";
+import {
+  ArrowRight,
+  BadgeCheck,
+  CalendarClock,
+  FileCheck2,
+  Handshake,
+  Lock,
+  MessageSquare,
+  Percent,
+  ShieldCheck,
+  Star,
+  Truck,
+  Users,
+} from "lucide-react";
 
-import { INICIO_POR_ROL, ROLES, type Rol } from "@/lib/navegacion";
+import {
+  CenefaCordillera,
+  PaisajeCordillera,
+  PaisajeCosta,
+  PaisajeValle,
+} from "@/components/marketing/paisajes";
+import { PlacaPatente } from "@/components/shared/placa-patente";
+import { Button } from "@/components/ui/button";
+import { COMISION_VIAJE_PCT } from "@/lib/utils/rules";
 
-const DESCRIPCION_ROL: Record<Rol, string> = {
-  agencia:
-    "Publica ofertas de viaje, compara respuestas, adjudica y paga. Es el lado que genera la demanda.",
-  transportista:
-    "Recibe ofertas que calzan con tu flota, acepta o contraoferta, y administra vehículos, conductores y agenda.",
-  admin:
-    "Verifica documentos, resuelve disputas, ajusta comisiones y mira las métricas del marketplace.",
+export const metadata: Metadata = {
+  title: "Rutero · Transporte de pasajeros para agencias de turismo",
+  description:
+    "Publica tu viaje, recibe respuestas de transportistas verificados y paga con el respaldo del escrow. Marketplace chileno de vans, minibuses y sprinters.",
 };
 
-export default function Home() {
+const PASOS = [
+  {
+    icono: Users,
+    titulo: "Publicas el viaje",
+    detalle:
+      "Ruta, fecha, cuántos pasajeros y tu presupuesto referencial. Te toma dos minutos y eliges si cierra en 6, 24 o 72 horas.",
+  },
+  {
+    icono: Handshake,
+    titulo: "Llegan las respuestas",
+    detalle:
+      "Los transportistas de la zona aceptan tu precio o contraofertan con su monto y una nota. Los comparas en una sola tabla.",
+  },
+  {
+    icono: Lock,
+    titulo: "Adjudicas y pagas al escrow",
+    detalle:
+      "La plata queda retenida por Rutero. Recién ahí se revelan los contactos y se abre el chat del viaje.",
+  },
+  {
+    icono: ShieldCheck,
+    titulo: "Se libera al completarse",
+    detalle:
+      "El viaje se ejecuta, tú confirmas y el pago se libera. Si algo falla, abres una disputa y la plata no se mueve.",
+  },
+];
+
+const RESPALDO = [
+  {
+    icono: FileCheck2,
+    titulo: "Papeles al día, revisados uno por uno",
+    detalle:
+      "Inscripción DS 80, permiso de circulación, revisión técnica, SOAP y licencia profesional A2 o A3. Si un documento crítico vence, el transportista no puede postular hasta renovarlo.",
+  },
+  {
+    icono: Lock,
+    titulo: "El pago no se mueve hasta que el viaje se completa",
+    detalle:
+      "La agencia deposita al adjudicar y Rutero retiene. Si el transportista no aparece, el reembolso es total y la oferta se reabre como urgente.",
+  },
+  {
+    icono: Star,
+    titulo: "Calificación de los dos lados, y ciega",
+    detalle:
+      "Ninguno ve la del otro hasta que ambos califiquen. Nadie califica bien por miedo a la represalia, y el historial no se puede llevar a otra parte.",
+  },
+];
+
+export default function LandingPage() {
   return (
-    <div className="flex flex-col gap-8 py-6">
-      <header className="max-w-2xl">
-        <p className="text-eyebrow font-display text-meta">Prototipo · Fase 1</p>
-        <h1 className="font-display text-display-lg text-ink">
-          Elige desde qué lado mirar
-        </h1>
-        <p className="mt-3 text-meta">
-          Rutero conecta agencias de turismo con transportistas de vans en Chile.
-          Este prototipo no tiene login: se cambia de rol acá o en la barra
-          superior, en cualquier momento.
-        </p>
+    <div className="flex flex-col">
+      {/* ---------------------------------------------------------- Encabezado */}
+      <header className="surface-dark relative z-20 bg-base">
+        <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between gap-4 px-4 py-4">
+          <span className="flex items-baseline gap-2">
+            <span className="font-display text-display-sm leading-none text-white">
+              Rutero
+            </span>
+            <span className="text-eyebrow font-display text-signal">Chile</span>
+          </span>
+
+          <nav className="flex items-center gap-2">
+            <Button variant="ghost" asChild className="hidden sm:inline-flex">
+              <Link href="#como-funciona">Cómo funciona</Link>
+            </Button>
+            <Button variant="ghost" asChild className="hidden sm:inline-flex">
+              <Link href="#transportistas">Para transportistas</Link>
+            </Button>
+            <Button asChild>
+              <Link href="/entrar">
+                Ver la demo
+                <ArrowRight className="size-4" aria-hidden />
+              </Link>
+            </Button>
+          </nav>
+        </div>
       </header>
 
-      <ul className="grid gap-4 md:grid-cols-3">
-        {ROLES.map(({ rol, etiqueta, icono: Icono }) => (
-          <li key={rol}>
-            <Link
-              href={INICIO_POR_ROL[rol]}
-              className="group flex h-full flex-col gap-3 rounded-lg border border-line bg-surface p-5 transition-colors hover:border-signal"
-            >
-              <span className="flex size-11 items-center justify-center rounded bg-signal-soft text-signal">
-                <Icono className="size-5" aria-hidden />
-              </span>
-              <span className="font-display text-display-sm text-ink">
-                {etiqueta}
-              </span>
-              <span className="flex-1 text-sm text-meta">
-                {DESCRIPCION_ROL[rol]}
-              </span>
-              <span className="flex items-center gap-1.5 text-sm font-medium text-ink">
-                Entrar
-                <ArrowRight
-                  className="size-4 transition-transform group-hover:translate-x-0.5"
-                  aria-hidden
-                />
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {/* ---------------------------------------------------------------- Hero */}
+      <section className="relative isolate overflow-hidden bg-base">
+        <div className="absolute inset-0 -z-10">
+          <PaisajeCordillera />
+          {/* Vela el lado del texto lo justo para que el titular contraste y
+              la montaña se siga viendo a la derecha. */}
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-gradient-to-r from-base via-base/75 to-transparent"
+          />
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-gradient-to-t from-base/70 via-transparent to-base/40"
+          />
+        </div>
 
-      <Link
-        href="/styleguide"
-        className="flex w-fit items-center gap-2 text-sm text-meta underline-offset-4 hover:text-ink hover:underline"
-      >
-        <Palette className="size-4" aria-hidden />
-        Ver la guía de estilos
-      </Link>
+        <div className="mx-auto w-full max-w-[1200px] px-4 py-20 lg:py-28">
+          <div className="max-w-2xl">
+            <p className="text-eyebrow font-display text-signal">
+              Marketplace de transporte de pasajeros
+            </p>
+            <h1 className="mt-3 font-titular text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.02] font-bold text-white">
+              La van que necesitas, sin cotizar por WhatsApp
+            </h1>
+            <p className="mt-5 max-w-xl text-lg text-white/80">
+              Publica tu viaje una vez y recibe respuestas de transportistas con
+              los papeles al día. Comparas precios en una tabla, adjudicas, y el
+              pago queda retenido hasta que el grupo vuelve.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button size="lg" asChild>
+                <Link href="/entrar">
+                  Publicar un viaje
+                  <ArrowRight className="size-4" aria-hidden />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <Link href="#transportistas">
+                  <Truck className="size-4" aria-hidden />
+                  Tengo una van
+                </Link>
+              </Button>
+            </div>
+
+            <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-6">
+              <div>
+                <dt className="text-eyebrow font-display text-white/60">
+                  Comisión
+                </dt>
+                <dd className="font-mono text-display-sm tabular-nums text-white">
+                  {COMISION_VIAJE_PCT}%
+                </dd>
+                <p className="text-xs text-white/60">
+                  La agencia no paga fee
+                </p>
+              </div>
+              <div>
+                <dt className="text-eyebrow font-display text-white/60">
+                  Respuestas
+                </dt>
+                <dd className="font-mono text-display-sm tabular-nums text-white">
+                  &lt; 3 h
+                </dd>
+                <p className="text-xs text-white/60">Mediana de la primera</p>
+              </div>
+              <div>
+                <dt className="text-eyebrow font-display text-white/60">
+                  Cobertura
+                </dt>
+                <dd className="font-mono text-display-sm tabular-nums text-white">
+                  Arica a Punta Arenas
+                </dd>
+                <p className="text-xs text-white/60">Vans, minibuses y buses</p>
+              </div>
+            </dl>
+          </div>
+        </div>
+
+        <CenefaCordillera className="-mb-px block text-nieve" />
+      </section>
+
+      {/* --------------------------------------------------------- El problema */}
+      <section className="bg-nieve py-16 lg:py-20">
+        <div className="mx-auto w-full max-w-[1200px] px-4">
+          <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+            <div>
+              <p className="text-eyebrow font-display text-meta">El problema</p>
+              <h2 className="mt-2 font-titular text-[clamp(1.9rem,3.4vw,2.75rem)] leading-[1.05] font-bold text-ink">
+                Cotizar transporte se lleva la mañana
+              </h2>
+              <p className="mt-4 text-meta">
+                Hoy conseguir una van es llamar a tres contactos, esperar que
+                contesten, y aceptar al que responde primero sin saber si tiene
+                los papeles al día. Si falla el día del viaje, no hay a quién
+                reclamarle.
+              </p>
+              <p className="mt-3 text-meta">
+                Del otro lado, el furgonero tiene la van parada media semana
+                porque su demanda depende de a quién conozca.
+              </p>
+
+              <ul className="mt-6 flex flex-col gap-3">
+                {[
+                  "Publicas una vez, te responden varios",
+                  "Ves la patente, el modelo, los años y el rating antes de decidir",
+                  "El respaldo del viaje está en la plataforma, no en la palabra",
+                ].map((t) => (
+                  <li key={t} className="flex items-start gap-3">
+                    <BadgeCheck
+                      className="mt-0.5 size-5 shrink-0 text-go"
+                      aria-hidden
+                    />
+                    <span className="text-ink">{t}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Muestra del producto: la bandeja comparable */}
+            <div className="rounded-xl border border-line bg-surface p-5 shadow-sm">
+              <div className="flex items-center justify-between gap-3 border-b border-line pb-3">
+                <div>
+                  <p className="font-mono text-xs text-meta">RT-0009</p>
+                  <p className="font-display text-display-sm text-ink">
+                    Farellones día completo
+                  </p>
+                </div>
+                <span className="rounded border border-signal/40 bg-signal-soft px-2 py-1 text-xs font-medium text-signal-ink">
+                  4 respuestas
+                </span>
+              </div>
+
+              <ul className="divide-y divide-line">
+                {[
+                  { n: "Transportes Cordillera", p: "CHJK15", m: "$305.000", r: "4,6", d: "15 pax" },
+                  { n: "Marcela Ruiz Fuentes", p: "LPRS56", m: "$295.000", r: "4,9", d: "15 pax" },
+                  { n: "Juan Carlos Miranda", p: "BCDF12", m: "$280.000", r: "4,8", d: "19 pax" },
+                ].map((f) => (
+                  <li
+                    key={f.p}
+                    className="flex flex-wrap items-center justify-between gap-3 py-3"
+                  >
+                    <div className="flex items-center gap-3">
+                      <PlacaPatente patente={f.p} tamano="sm" />
+                      <div>
+                        <p className="text-sm font-medium text-ink">{f.n}</p>
+                        <p className="flex items-center gap-1 text-xs text-meta">
+                          <Star className="size-3 text-signal" aria-hidden />
+                          <span className="font-mono tabular-nums">{f.r}</span>
+                          <span>· {f.d}</span>
+                        </p>
+                      </div>
+                    </div>
+                    <span className="font-mono font-medium tabular-nums text-ink">
+                      {f.m}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              <p className="mt-3 border-t border-line pt-3 text-xs text-meta">
+                Así se ve la bandeja de respuestas. Los montos se alinean para que
+                compares de un vistazo.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------ Cómo funciona */}
+      <section id="como-funciona" className="scroll-mt-16 bg-surface py-16 lg:py-20">
+        <div className="mx-auto w-full max-w-[1200px] px-4">
+          <div className="max-w-2xl">
+            <p className="text-eyebrow font-display text-meta">Cómo funciona</p>
+            <h2 className="mt-2 font-titular text-[clamp(1.9rem,3.4vw,2.75rem)] leading-[1.05] font-bold text-ink">
+              Cuatro pasos, sin llamadas
+            </h2>
+          </div>
+
+          <ol className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {PASOS.map((paso, i) => {
+              const Icono = paso.icono;
+              return (
+                <li
+                  key={paso.titulo}
+                  className="relative flex flex-col gap-3 rounded-xl border border-line bg-nieve p-5"
+                >
+                  <span className="flex size-11 items-center justify-center rounded-lg bg-base text-signal">
+                    <Icono className="size-5" aria-hidden />
+                  </span>
+                  <span className="font-mono text-xs text-meta">
+                    Paso {i + 1}
+                  </span>
+                  <h3 className="font-display text-display-sm text-ink">
+                    {paso.titulo}
+                  </h3>
+                  <p className="text-sm text-meta">{paso.detalle}</p>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------ Respaldo */}
+      <section className="relative isolate overflow-hidden bg-base py-16 lg:py-20">
+        <div className="absolute inset-0 -z-10 opacity-25">
+          <PaisajeValle />
+        </div>
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 bg-gradient-to-b from-base via-base/85 to-base"
+        />
+
+        <div className="mx-auto w-full max-w-[1200px] px-4">
+          <div className="max-w-2xl">
+            <p className="text-eyebrow font-display text-signal">El respaldo</p>
+            <h2 className="mt-2 font-titular text-[clamp(1.9rem,3.4vw,2.75rem)] leading-[1.05] font-bold text-white">
+              Por qué esto es distinto a un grupo de WhatsApp
+            </h2>
+          </div>
+
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            {RESPALDO.map((r) => {
+              const Icono = r.icono;
+              return (
+                <div
+                  key={r.titulo}
+                  className="flex flex-col gap-3 rounded-xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm"
+                >
+                  <span className="flex size-11 items-center justify-center rounded-lg bg-signal text-ink">
+                    <Icono className="size-5" aria-hidden />
+                  </span>
+                  <h3 className="font-display text-display-sm text-white">
+                    {r.titulo}
+                  </h3>
+                  <p className="text-sm text-white/70">{r.detalle}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------- Para transportistas */}
+      <section id="transportistas" className="scroll-mt-16 bg-nieve py-16 lg:py-20">
+        <div className="mx-auto w-full max-w-[1200px] px-4">
+          <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+            <div className="order-2 overflow-hidden rounded-xl border border-line lg:order-1">
+              <div className="aspect-[3/2]">
+                <PaisajeCosta />
+              </div>
+            </div>
+
+            <div className="order-1 lg:order-2">
+              <p className="text-eyebrow font-display text-meta">
+                Para transportistas
+              </p>
+              <h2 className="mt-2 font-titular text-[clamp(1.9rem,3.4vw,2.75rem)] leading-[1.05] font-bold text-ink">
+                Tu van deja de estar parada
+              </h2>
+              <p className="mt-4 text-meta">
+                Da lo mismo si tienes una van o seis: es la misma cuenta. Cargas
+                tu vehículo, tu licencia y tus papeles, bloqueas las horas del
+                recorrido escolar, y solo te llegan los viajes que puedes tomar.
+              </p>
+
+              <ul className="mt-6 flex flex-col gap-4">
+                {[
+                  {
+                    icono: CalendarClock,
+                    t: "Tu agenda manda",
+                    d: "Bloqueas el escolar de lunes a viernes y los viajes que se cruzan ni te aparecen.",
+                  },
+                  {
+                    icono: Percent,
+                    t: `${COMISION_VIAJE_PCT}% de comisión, sin letra chica`,
+                    d: "Ves el bruto, la comisión y lo que recibes antes de responder.",
+                  },
+                  {
+                    icono: MessageSquare,
+                    t: "El grupo te llega armado",
+                    d: "¿Tienes pasajeros pero no eres agencia? Publica el grupo y una agencia te paga comisión por el dato.",
+                  },
+                ].map(({ icono: Icono, t, d }) => (
+                  <li key={t} className="flex items-start gap-3">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-go-soft text-go-ink">
+                      <Icono className="size-5" aria-hidden />
+                    </span>
+                    <div>
+                      <p className="font-medium text-ink">{t}</p>
+                      <p className="text-sm text-meta">{d}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              <Button size="lg" className="mt-8" asChild>
+                <Link href="/entrar">
+                  Ver cómo se ve para mí
+                  <ArrowRight className="size-4" aria-hidden />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ----------------------------------------------------------- Cierre */}
+      <section className="bg-surface py-16 lg:py-20">
+        <div className="mx-auto w-full max-w-[1200px] px-4">
+          <div className="rounded-2xl border border-line bg-base px-6 py-12 text-center lg:px-16">
+            <h2 className="font-titular text-[clamp(1.9rem,3.4vw,2.75rem)] leading-[1.05] font-bold text-white">
+              Rutero está en construcción
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-white/70">
+              Esto es un prototipo navegable, con datos de demostración. Lo
+              estamos mostrando a agencias y transportistas para ajustar el
+              modelo antes de abrirlo. Si trabajas en el rubro, entra y dinos qué
+              está mal.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Button size="lg" asChild>
+                <Link href="/entrar">
+                  Entrar a la demo
+                  <ArrowRight className="size-4" aria-hidden />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------- Footer */}
+      <footer className="surface-dark bg-base-deep py-10">
+        <div className="mx-auto flex w-full max-w-[1200px] flex-wrap items-center justify-between gap-4 px-4">
+          <div>
+            <p className="font-display text-display-sm text-white">Rutero</p>
+            <p className="mt-1 text-sm text-white/60">
+              Transporte de pasajeros para agencias de turismo en Chile.
+            </p>
+          </div>
+          <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/60">
+            <Link href="/entrar" className="hover:text-white">
+              Demo
+            </Link>
+            <Link href="#como-funciona" className="hover:text-white">
+              Cómo funciona
+            </Link>
+            <Link href="#transportistas" className="hover:text-white">
+              Transportistas
+            </Link>
+            <Link href="/styleguide" className="hover:text-white">
+              Sistema de diseño
+            </Link>
+          </nav>
+        </div>
+      </footer>
     </div>
   );
 }

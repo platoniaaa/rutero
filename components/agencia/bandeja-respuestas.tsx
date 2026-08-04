@@ -110,7 +110,9 @@ export function BandejaRespuestas({
                     r.estado === "ganadora" && "bg-go-soft",
                   )}
                 >
-                  <TableCell>
+                  {/* whitespace-normal: la celda de shadcn viene con nowrap y la
+                      nota se desbordaba sobre la columna del vehículo. */}
+                  <TableCell className="max-w-xs align-top whitespace-normal">
                     <p className="font-medium text-ink">{carrier?.nombre}</p>
                     <p className="flex items-center gap-2 text-xs text-meta">
                       <span className="flex items-center gap-1">
@@ -125,11 +127,13 @@ export function BandejaRespuestas({
                       viajes
                     </p>
                     {r.nota && (
-                      <p className="mt-1 max-w-xs text-xs text-ink/70">“{r.nota}”</p>
+                      <p className="mt-1 text-xs text-balance text-ink/70">
+                        “{r.nota}”
+                      </p>
                     )}
                   </TableCell>
 
-                  <TableCell>
+                  <TableCell className="align-top">
                     {vehiculo && (
                       <div className="flex flex-col gap-1">
                         <PlacaPatente patente={vehiculo.patente} tamano="sm" />
@@ -145,7 +149,7 @@ export function BandejaRespuestas({
                     )}
                   </TableCell>
 
-                  <TableCell className="text-sm">
+                  <TableCell className="max-w-44 align-top text-sm whitespace-normal">
                     <p className="text-ink">{conductor?.nombre}</p>
                     <p className="text-xs text-meta">
                       {conductor?.licenciaClase} ·{" "}
@@ -153,7 +157,7 @@ export function BandejaRespuestas({
                     </p>
                   </TableCell>
 
-                  <TableCell className="text-right">
+                  <TableCell className="text-right align-top">
                     <p className="font-mono font-medium tabular-nums text-ink">
                       {formatearCLP(r.monto)}
                     </p>
@@ -161,7 +165,7 @@ export function BandejaRespuestas({
                       <p
                         className={cn(
                           "flex items-center justify-end gap-1 font-mono text-xs tabular-nums",
-                          diferencia > 0 ? "text-stop" : "text-[#0b6b60]",
+                          diferencia > 0 ? "text-stop" : "text-go-ink",
                         )}
                       >
                         {diferencia > 0 ? (

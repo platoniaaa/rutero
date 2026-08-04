@@ -146,7 +146,7 @@ function DialogoResponder({
           </div>
           <div className="flex items-center justify-between gap-4 border-t border-line pt-1">
             <dt className="font-medium text-ink">Te queda</dt>
-            <dd className="font-mono font-medium tabular-nums text-[#0b6b60]">
+            <dd className="font-mono font-medium tabular-nums text-go-ink">
               {formatearCLP(total - comision)}
             </dd>
           </div>
