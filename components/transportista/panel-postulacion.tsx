@@ -229,7 +229,9 @@ export function PanelPostulacion({
       </p>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <div className="flex flex-col gap-2">
+        {/* min-w-0: el nombre largo del vehículo estiraba la columna del grid
+            más allá del ancho del celular. */}
+        <div className="flex min-w-0 flex-col gap-2">
           <Label htmlFor="post-vehiculo">Vehículo</Label>
           <Select value={vehiculoId} onValueChange={setVehiculoId}>
             <SelectTrigger id="post-vehiculo">
@@ -246,7 +248,7 @@ export function PanelPostulacion({
           </Select>
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex min-w-0 flex-col gap-2">
           <Label htmlFor="post-conductor">Conductor</Label>
           <Select value={conductorId} onValueChange={setConductorId}>
             <SelectTrigger id="post-conductor">

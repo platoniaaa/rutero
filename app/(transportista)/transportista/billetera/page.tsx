@@ -6,6 +6,11 @@ import { Lock, Wallet } from "lucide-react";
 import { BadgeEstado } from "@/components/shared/badge-estado";
 import { EncabezadoPagina, Metrica } from "@/components/shared/encabezado-pagina";
 import { ListaCargando, ListaVacia } from "@/components/shared/estado-lista";
+import {
+  FilaTarjeta,
+  ListaTarjetas,
+  TablaEscritorio,
+} from "@/components/shared/tabla-responsiva";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -132,8 +137,62 @@ export default function BilleteraPage() {
             }
           />
         ) : (
-          <div className="overflow-x-auto rounded-lg border border-line">
-            <Table>
+          <>
+            <ListaTarjetas>
+              {conPago.map(({ viaje, pago }) => {
+                const oferta = buscarOferta(datos, viaje.ofertaId);
+                const agencia = buscarAgencia(datos, viaje.agenciaId);
+                return (
+                  <FilaTarjeta
+                    key={viaje.id}
+                    titulo={
+                      <Link
+                        href={`/transportista/viajes/${viaje.id}`}
+                        className="underline-offset-4 hover:underline"
+                      >
+                        {oferta?.titulo}
+                      </Link>
+                    }
+                    subtitulo={
+                      <>
+                        <span className="font-mono">{oferta?.codigo}</span> ·{" "}
+                        {agencia?.razonSocial}
+                      </>
+                    }
+                    destacado={formatearCLP(pago!.montoNeto)}
+                    detalleDestacado="lo que recibes"
+                    datos={[
+                      { etiqueta: "Bruto", valor: formatearCLP(pago!.montoBruto) },
+                      {
+                        etiqueta: "Comisión",
+                        valor: (
+                          <span className="text-stop">
+                            −{formatearCLP(pago!.comisionPlataforma)}
+                          </span>
+                        ),
+                      },
+                      {
+                        etiqueta: "Liberado",
+                        valor: pago!.fechaLiberacion
+                          ? formatearFechaLarga(pago!.fechaLiberacion)
+                          : null,
+                      },
+                    ]}
+                    pie={
+                      <BadgeEstado tono={TONO_PAGO[pago!.estado]}>
+                        {pago!.estado === "retenido" && (
+                          <Lock className="size-3.5" aria-hidden />
+                        )}
+                        {ETIQUETA_ESTADO_PAGO[pago!.estado]}
+                      </BadgeEstado>
+                    }
+                  />
+                );
+              })}
+            </ListaTarjetas>
+
+            <TablaEscritorio>
+              <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Viaje</TableHead>
@@ -190,9 +249,10 @@ export default function BilleteraPage() {
                     </TableRow>
                   );
                 })}
-              </TableBody>
-            </Table>
-          </div>
+                </TableBody>
+              </Table>
+            </TablaEscritorio>
+          </>
         )}
       </section>
     </div>

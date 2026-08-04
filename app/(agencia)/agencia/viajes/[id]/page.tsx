@@ -119,7 +119,7 @@ export default function DetalleViajeAgenciaPage({
       <AccionesViaje viaje={viaje} oferta={oferta} rol="agencia" ahora={ahora} />
 
       <div className="grid gap-4 lg:grid-cols-3">
-        <div className="flex flex-col gap-4 lg:col-span-2">
+        <div className="flex min-w-0 flex-col gap-4 lg:col-span-2">
           {/* Transportista asignado */}
           <section className="rounded-lg border border-line bg-surface p-5">
             <h2 className="font-display text-display-sm text-ink">

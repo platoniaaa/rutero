@@ -81,7 +81,121 @@ export function BandejaRespuestas({
 
   return (
     <>
-      <div className="overflow-x-auto rounded-lg border border-line">
+      {/* En celular cada respuesta es una tarjeta. El monto y el equivalente
+          por pasajero quedan juntos y alineados, que es contra lo que la
+          agencia decide. */}
+      <ul className="flex flex-col gap-3 lg:hidden">
+        {respuestas.map((r) => {
+          const carrier = carrierDe(r);
+          const vehiculo = buscarVehiculo(datos, r.vehiculoId);
+          const conductor = buscarConductor(datos, r.conductorId);
+          const diferencia = r.monto - montoReferencia;
+          const inactiva = r.estado === "retirada" || r.estado === "rechazada";
+
+          return (
+            <li
+              key={r.id}
+              className={cn(
+                "rounded-lg border bg-surface p-4",
+                r.estado === "ganadora" ? "border-go/40 bg-go-soft" : "border-line",
+                inactiva && "opacity-50",
+              )}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="font-medium text-ink">{carrier?.nombre}</p>
+                  <p className="flex items-center gap-2 text-xs text-meta">
+                    <span className="flex items-center gap-1">
+                      <Star className="size-3 text-signal" aria-hidden />
+                      <span className="font-mono tabular-nums">
+                        {carrier?.ratingPromedio.toFixed(1) ?? "—"}
+                      </span>
+                    </span>
+                    <span className="font-mono tabular-nums">
+                      {carrier?.viajesCompletados ?? 0}
+                    </span>{" "}
+                    viajes
+                  </p>
+                </div>
+                <div className="shrink-0 text-right">
+                  <p className="font-mono text-lg font-medium tabular-nums text-ink">
+                    {formatearCLP(r.monto)}
+                  </p>
+                  <p className="font-mono text-xs tabular-nums text-meta">
+                    {formatearCLP(
+                      montoPorPasajero(r.monto, oferta.cantidadPasajeros),
+                    )}
+                    /pax
+                  </p>
+                  {diferencia !== 0 && (
+                    <p
+                      className={cn(
+                        "flex items-center justify-end gap-1 font-mono text-xs tabular-nums",
+                        diferencia > 0 ? "text-stop" : "text-go-ink",
+                      )}
+                    >
+                      {diferencia > 0 ? (
+                        <TrendingUp className="size-3" aria-hidden />
+                      ) : (
+                        <TrendingDown className="size-3" aria-hidden />
+                      )}
+                      {diferencia > 0 ? "+" : "−"}
+                      {formatearCLP(Math.abs(diferencia))}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {vehiculo && (
+                <div className="mt-3 flex items-center gap-3 border-t border-line pt-3">
+                  <PlacaPatente patente={vehiculo.patente} tamano="sm" />
+                  <div className="min-w-0 text-xs text-meta">
+                    <p className="truncate">
+                      {vehiculo.marca} {vehiculo.modelo} ·{" "}
+                      <span className="font-mono tabular-nums">
+                        {vehiculo.capacidadPasajeros}
+                      </span>{" "}
+                      pax
+                    </p>
+                    <p className="truncate">
+                      {conductor?.nombre} · {conductor?.licenciaClase}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {r.nota && (
+                <p className="mt-2 text-sm text-ink/70">“{r.nota}”</p>
+              )}
+
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+                <BadgeEstado tono={TONO_RESPUESTA[r.estado]}>
+                  {r.estado === "activa"
+                    ? r.tipo === "aceptacion"
+                      ? "Aceptó el precio"
+                      : "Contraoferta"
+                    : ETIQUETA_ESTADO_RESPUESTA[r.estado]}
+                </BadgeEstado>
+                <span className="text-xs text-meta">
+                  {formatearRelativo(r.createdAt)}
+                </span>
+              </div>
+
+              {decidible && r.estado === "activa" && (
+                <Button
+                  className="mt-3 w-full"
+                  onClick={() => setPorAdjudicar(r)}
+                >
+                  <Gavel className="size-4" aria-hidden />
+                  Adjudicar
+                </Button>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+
+      <div className="hidden overflow-x-auto rounded-lg border border-line lg:block">
         <Table>
           <TableHeader>
             <TableRow>

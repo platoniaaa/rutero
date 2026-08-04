@@ -273,7 +273,7 @@ confirmada → pago_retenido → en_curso → finalizada → liberada
 - Seed data realista: nombres de agencias chilenas verosímiles, rutas reales (Santiago–Valle Nevado, aeropuerto SCL–Viña, Pucón, San Pedro de Atacama), patentes con formato chileno, montos en CLP de mercado
 - **Switch de rol en la barra superior** para saltar entre agencia / transportista / admin sin login. Es la herramienta que hace posible validar los flujos
 - Estados vacíos, de carga y de error diseñados
-- **Desktop primero.** La Fase 1 se construye y se valida en pantalla de computador. El celular viene en una fase posterior: los furgoneros van a terminar usando esto en el celular, al sol y con una mano, así que el diseño no debe cerrarse puertas — layouts fluidos, nada de anchos fijos — pero la vista móvil no se optimiza todavía
+- **Desktop y celular.** Se construyó primero para computador y después se adaptó a celular, que es donde el furgonero la va a usar de verdad: al sol y con una mano. Las 26 pantallas se recorren en 375 px sin scroll lateral, los controles miden al menos 44 px y las tablas densas —bandeja de respuestas, billetera, pagos, lista de embarque— pasan a tarjetas apiladas conservando la comparabilidad de los montos
 
 **No:**
 - Backend, base de datos, autenticación real

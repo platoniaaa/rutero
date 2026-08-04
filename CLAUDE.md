@@ -90,8 +90,9 @@ El grupo de rutas organiza el código; el segmento que sigue es el que define la
 - Todo el texto de interfaz en español chileno neutro. Nada de "coche", "autobús" ni "recogida".
 
 **UI**
-- **Desktop primero.** La Fase 1 se diseña y valida en pantalla de computador. El celular es una fase posterior: usa layouts fluidos y evita anchos fijos para no cerrarte puertas, pero no gastes tiempo optimizando la vista móvil todavía.
-- Targets de toque mínimo 44px.
+- **Desktop y celular.** Toda pantalla nueva tiene que recorrerse en 375 px sin scroll lateral. La causa más común de que aparezca es un item de grid o flex sin `min-w-0`: `min-width: auto` es el valor por defecto e impide que se encoja bajo el ancho de su contenido, así que una tabla adentro estira todo el contenedor aunque tenga scroll propio.
+- Targets de toque mínimo 44px. En celular ya hay una regla global sobre los `data-slot` de shadcn en `globals.css`; no la repitas por componente.
+- Las tablas de más de cuatro columnas pasan a tarjetas apiladas bajo `lg`. Los helpers están en `components/shared/tabla-responsiva.tsx`.
 - Cada lista necesita sus tres estados: vacío, cargando y error. No los dejes para después.
 - Los montos en tablas comparativas usan `tabular-nums`.
 - Respeta `prefers-reduced-motion`.
@@ -111,7 +112,7 @@ El grupo de rutas organiza el código; el segmento que sigue es el que define la
 Un hito está listo cuando:
 1. `npm run build` pasa limpio
 2. `npx tsc --noEmit` no arroja errores
-3. Las pantallas del hito se recorren completas en desktop
+3. Las pantallas del hito se recorren completas en desktop y en 375 px
 4. Los estados vacío / cargando / error existen
 5. El estado persiste al recargar la página
 

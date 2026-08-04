@@ -335,8 +335,72 @@ export function ListaEmbarque({
           }
         />
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-line">
-          <Table>
+        <>
+          {/* En celular la tabla de siete columnas no sirve: cada pasajero es
+              una tarjeta. */}
+          <ul className="flex flex-col gap-2 md:hidden">
+            {pasajeros.map((p, i) => (
+              <li
+                key={p.id}
+                className="rounded-lg border border-line bg-surface p-3"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="font-medium text-ink">
+                      <span className="font-mono text-xs text-meta">
+                        {i + 1}.
+                      </span>{" "}
+                      {p.nombreCompleto}
+                    </p>
+                    {p.documento && (
+                      <p className="font-mono text-xs tabular-nums text-meta">
+                        {p.documento}
+                      </p>
+                    )}
+                  </div>
+                  {editable && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label={`Quitar a ${p.nombreCompleto}`}
+                      onClick={() => {
+                        eliminarPasajero(p.id);
+                        toast.success(`${p.nombreCompleto} quitado de la lista`);
+                      }}
+                    >
+                      <Trash2 className="size-4" aria-hidden />
+                    </Button>
+                  )}
+                </div>
+
+                <dl className="mt-2 flex flex-col gap-1 border-t border-line pt-2 text-sm">
+                  {p.telefono && (
+                    <div className="flex justify-between gap-3">
+                      <dt className="text-meta">Teléfono</dt>
+                      <dd className="font-mono tabular-nums text-ink">
+                        {p.telefono}
+                      </dd>
+                    </div>
+                  )}
+                  {p.puntoRecogida && (
+                    <div className="flex justify-between gap-3">
+                      <dt className="shrink-0 text-meta">Recogida</dt>
+                      <dd className="text-right text-ink">{p.puntoRecogida}</dd>
+                    </div>
+                  )}
+                  {p.observaciones && (
+                    <div className="flex justify-between gap-3">
+                      <dt className="shrink-0 text-meta">Observaciones</dt>
+                      <dd className="text-right text-ink">{p.observaciones}</dd>
+                    </div>
+                  )}
+                </dl>
+              </li>
+            ))}
+          </ul>
+
+          <div className="hidden overflow-x-auto rounded-lg border border-line md:block">
+            <Table>
             <TableHeader>
               <TableRow>
                 <TableHead className="w-10">#</TableHead>
@@ -385,8 +449,9 @@ export function ListaEmbarque({
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
-        </div>
+            </Table>
+          </div>
+        </>
       )}
 
       <DialogoPegar

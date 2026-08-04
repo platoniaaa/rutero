@@ -118,7 +118,7 @@ export default function DetalleViajeTransportistaPage({
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
-        <div className="flex flex-col gap-4 lg:col-span-2">
+        <div className="flex min-w-0 flex-col gap-4 lg:col-span-2">
           <Tabs defaultValue="hoja">
             <TabsList className="print:hidden">
               <TabsTrigger value="hoja" className="min-h-11">

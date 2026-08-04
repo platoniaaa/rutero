@@ -154,6 +154,37 @@
   :focus-visible {
     @apply outline-ring outline-2 outline-offset-2;
   }
+
+  /* En celular todo lo que se toca mide al menos 44px. Los tamaños de shadcn
+     van de 32 a 36, que sirven con mouse pero no con el pulgar. Se apunta a
+     los data-slot para no inflar los enlaces de texto corrido. */
+  @media (max-width: 767px) {
+    [data-slot="button"],
+    [data-slot="select-trigger"],
+    [data-slot="input"],
+    [data-slot="tabs-trigger"] {
+      min-height: 2.75rem;
+    }
+
+    [data-slot="button"][data-size="icon"] {
+      min-width: 2.75rem;
+    }
+
+    /* Los selects vienen con ancho ajustado al contenido, que con el pulgar
+       es un blanco chico. En celular ocupan la línea completa. */
+    [data-slot="select-trigger"] {
+      width: 100%;
+    }
+  }
+
+  /* Una opción larga —"BCDF·12 · Mercedes-Benz Sprinter 516 · 19 pax"— no debe
+     estirar el select más allá de su contenedor: se corta con puntos. */
+  [data-slot="select-trigger"] > span:not([data-slot="select-icon"]) {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 @layer utilities {

@@ -32,7 +32,7 @@ export function DetalleOferta({ oferta, ahora }: { oferta: Oferta; ahora: Date }
   return (
     <div className="grid gap-4 lg:grid-cols-3">
       {/* Ruta e itinerario */}
-      <section className="rounded-lg border border-line bg-surface p-5 lg:col-span-2">
+      <section className="min-w-0 rounded-lg border border-line bg-surface p-5 lg:col-span-2">
         <h2 className="font-display text-display-sm text-ink">Itinerario</h2>
 
         <ol className="mt-4 flex flex-col gap-0">
@@ -128,7 +128,7 @@ export function DetalleOferta({ oferta, ahora }: { oferta: Oferta; ahora: Date }
       </section>
 
       {/* Condiciones */}
-      <section className="flex flex-col gap-4">
+      <section className="flex min-w-0 flex-col gap-4">
         <div className="rounded-lg border border-line bg-surface p-5">
           <p className="text-eyebrow font-display text-meta">
             Presupuesto referencial

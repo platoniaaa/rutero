@@ -7,6 +7,11 @@ import { toast } from "sonner";
 import { BadgeEstado } from "@/components/shared/badge-estado";
 import { EncabezadoPagina, Metrica } from "@/components/shared/encabezado-pagina";
 import { ListaCargando, ListaVacia } from "@/components/shared/estado-lista";
+import {
+  FilaTarjeta,
+  ListaTarjetas,
+  TablaEscritorio,
+} from "@/components/shared/tabla-responsiva";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -162,8 +167,57 @@ export default function PagosAgenciaPage() {
             }
           />
         ) : (
-          <div className="overflow-x-auto rounded-lg border border-line">
-            <Table>
+          <>
+            <ListaTarjetas>
+              {conPago.map(({ viaje, pago }) => {
+                const oferta = buscarOferta(datos, viaje.ofertaId);
+                return (
+                  <FilaTarjeta
+                    key={viaje.id}
+                    titulo={
+                      <Link
+                        href={`/agencia/viajes/${viaje.id}`}
+                        className="underline-offset-4 hover:underline"
+                      >
+                        {oferta?.titulo}
+                      </Link>
+                    }
+                    subtitulo={
+                      <>
+                        <span className="font-mono">{oferta?.codigo}</span> ·{" "}
+                        {buscarTransportista(datos, viaje.carrierId)?.nombre}
+                      </>
+                    }
+                    destacado={formatearCLP(pago!.montoBruto)}
+                    detalleDestacado="lo que pagas"
+                    datos={[
+                      {
+                        etiqueta: "Comisión Rutero",
+                        valor: formatearCLP(pago!.comisionPlataforma),
+                      },
+                      {
+                        etiqueta: "Recibe",
+                        valor: formatearCLP(pago!.montoNeto),
+                      },
+                      {
+                        etiqueta: "Liberado",
+                        valor: pago!.fechaLiberacion
+                          ? formatearFechaLarga(pago!.fechaLiberacion)
+                          : null,
+                      },
+                    ]}
+                    pie={
+                      <BadgeEstado tono={TONO_PAGO[pago!.estado]}>
+                        {ETIQUETA_ESTADO_PAGO[pago!.estado]}
+                      </BadgeEstado>
+                    }
+                  />
+                );
+              })}
+            </ListaTarjetas>
+
+            <TablaEscritorio>
+              <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Viaje</TableHead>
@@ -216,9 +270,10 @@ export default function PagosAgenciaPage() {
                     </TableRow>
                   );
                 })}
-              </TableBody>
-            </Table>
-          </div>
+                </TableBody>
+              </Table>
+            </TablaEscritorio>
+          </>
         )}
       </section>
     </div>

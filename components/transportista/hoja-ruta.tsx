@@ -160,7 +160,9 @@ export function HojaRuta({
               La agencia todavía no carga la lista de embarque.
             </p>
           ) : (
-            <table className="mt-2 w-full text-sm">
+            /* En celular la nómina se desplaza; en el papel sale completa. */
+            <div className="overflow-x-auto print:overflow-visible">
+            <table className="mt-2 w-full min-w-[34rem] text-sm print:min-w-0">
               <thead>
                 <tr className="border-b border-line text-left">
                   <th className="w-10 py-1 font-display text-eyebrow text-meta">
@@ -201,6 +203,7 @@ export function HojaRuta({
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </div>
 
