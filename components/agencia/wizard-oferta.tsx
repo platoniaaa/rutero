@@ -25,8 +25,10 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { AdjuntarDocumentos } from "@/components/shared/adjuntar-documentos";
 import { useRutero } from "@/lib/mock/store";
 import type {
+  Adjunto,
   BloqueServicio,
   ModoAdjudicacion,
   Parada,
@@ -95,6 +97,7 @@ type Borrador = {
   modoAdjudicacion: ModoAdjudicacion;
   ventanaCierreHoras: VentanaCierre;
   notas: string;
+  adjuntos: Omit<Adjunto, "id">[];
 };
 
 const INICIAL: Borrador = {
@@ -118,6 +121,7 @@ const INICIAL: Borrador = {
   modoAdjudicacion: "yo_elijo",
   ventanaCierreHoras: 24,
   notas: "",
+  adjuntos: [],
 };
 
 const ZONAS = [
@@ -264,6 +268,7 @@ function FormularioOferta({
         creadaEn.getTime() + b.ventanaCierreHoras * 3_600_000,
       ).toISOString(),
       notas: b.notas.trim(),
+      adjuntos: b.adjuntos.map((a, i) => ({ ...a, id: `adj-${creadaEn.getTime()}-${i}` })),
       publicadaEn: undefined,
     };
   }
@@ -552,6 +557,45 @@ function FormularioOferta({
               )}
             </div>
           </div>
+
+          {/* Detalles del servicio: texto libre y documentos del brief */}
+          <fieldset className="border-t border-line pt-4">
+            <legend className="text-sm font-medium text-ink">
+              Detalles del servicio
+            </legend>
+            <p className="mt-1 mb-3 text-xs text-meta">
+              Todo lo que el transportista tiene que saber y no cabe en los
+              campos de arriba. Mientras más claro, mejores respuestas y menos
+              llamadas el día del viaje.
+            </p>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="of-notas">Notas para el transportista</Label>
+              <Textarea
+                id="of-notas"
+                value={b.notas}
+                onChange={(e) => setB({ ...b, notas: e.target.value })}
+                placeholder={
+                  "Grupo con equipos de ski propios, se necesita portaequipaje.\n" +
+                  "Cuatro niños: manejo tranquilo en la subida.\n" +
+                  "El guía se sube en la segunda parada."
+                }
+                rows={4}
+              />
+            </div>
+
+            <div className="mt-4 flex flex-col gap-2">
+              <Label>Documentos del viaje</Label>
+              <p className="text-xs text-meta">
+                Si tienes el itinerario o el programa en un archivo, súbelo acá y
+                el transportista lo descarga desde el detalle de la oferta.
+              </p>
+              <AdjuntarDocumentos
+                adjuntos={b.adjuntos}
+                onCambio={(adjuntos) => setB({ ...b, adjuntos })}
+              />
+            </div>
+          </fieldset>
         </div>
       )}
 
@@ -625,16 +669,6 @@ function FormularioOferta({
             </div>
           </fieldset>
 
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="of-notas">Notas para el transportista</Label>
-            <Textarea
-              id="of-notas"
-              value={b.notas}
-              onChange={(e) => setB({ ...b, notas: e.target.value })}
-              placeholder="Grupo con equipos de ski propios. Cuatro niños, se pide manejo tranquilo en la subida."
-              rows={3}
-            />
-          </div>
         </div>
       )}
 

@@ -266,6 +266,22 @@ export type Parada = {
   hora?: string;
 };
 
+/**
+ * Documento que la agencia adjunta al brief: el itinerario en PDF, el programa
+ * del tour, un plano del punto de encuentro. En la demo el contenido viaja como
+ * data URL dentro de `localStorage`, así que hay tope de tamaño.
+ */
+export type Adjunto = {
+  id: Id;
+  nombre: string;
+  /** MIME del archivo original. */
+  tipo: string;
+  /** Bytes del archivo original, para mostrarle el peso al usuario. */
+  tamano: number;
+  /** Data URL. Las imágenes se comprimen antes de guardarse. */
+  contenido: string;
+};
+
 export type Oferta = {
   id: Id;
   codigo: string;
@@ -289,7 +305,10 @@ export type Oferta = {
   modoAdjudicacion: ModoAdjudicacion;
   ventanaCierreHoras: VentanaCierre;
   expiraEn: FechaISO;
+  /** Detalles del servicio en texto libre, escritos por la agencia. */
   notas: string;
+  /** Itinerarios y programas que la agencia sube junto al brief. */
+  adjuntos: Adjunto[];
   estado: EstadoOferta;
   publicadaEn?: FechaISO;
   createdAt: FechaISO;

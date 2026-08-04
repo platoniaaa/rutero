@@ -29,7 +29,7 @@ import type {
 } from "@/lib/mock/types";
 
 /** Súbela cada vez que cambien las fixtures: regenera el seed guardado. */
-const VERSION_SEED = 2;
+const VERSION_SEED = 3;
 
 /** Ids incrementales sobre el prefijo de cada colección. */
 function nuevoId(prefijo: string, existentes: { id: string }[]): string {

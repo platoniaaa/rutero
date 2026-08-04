@@ -3,11 +3,13 @@ import {
   Clock,
   Gauge,
   MapPin,
+  Paperclip,
   StickyNote,
   Timer,
   Users,
 } from "lucide-react";
 
+import { FichaAdjunto } from "@/components/shared/adjuntar-documentos";
 import type { Oferta } from "@/lib/mock/types";
 import {
   ETIQUETA_BLOQUE,
@@ -100,10 +102,27 @@ export function DetalleOferta({ oferta, ahora }: { oferta: Oferta; ahora: Date }
             <StickyNote className="mt-0.5 size-4 shrink-0 text-meta" aria-hidden />
             <div>
               <p className="text-eyebrow font-display text-meta">
-                Notas de la agencia
+                Detalles de la agencia
               </p>
-              <p className="mt-1 text-sm text-ink">{oferta.notas}</p>
+              {/* El texto puede venir con saltos de línea del brief. */}
+              <p className="mt-1 text-sm whitespace-pre-line text-ink">
+                {oferta.notas}
+              </p>
             </div>
+          </div>
+        )}
+
+        {oferta.adjuntos.length > 0 && (
+          <div className="mt-4">
+            <p className="flex items-center gap-2 text-eyebrow font-display text-meta">
+              <Paperclip className="size-3.5" aria-hidden />
+              Documentos del viaje ({oferta.adjuntos.length})
+            </p>
+            <ul className="mt-2 flex flex-col gap-2">
+              {oferta.adjuntos.map((adjunto) => (
+                <FichaAdjunto key={adjunto.id} adjunto={adjunto} />
+              ))}
+            </ul>
           </div>
         )}
       </section>
