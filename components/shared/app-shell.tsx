@@ -22,7 +22,9 @@ function esRutaActiva(pathname: string, item: ItemNav, items: ItemNav[]) {
 }
 
 export function AppShell({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
+  // El sitio estático se sirve con barra final (/agencia/), pero los href del
+  // menú no la llevan. Se normaliza acá para que ambos comparen igual.
+  const pathname = usePathname().replace(/(.)\/$/, "$1");
 
   // La landing es pública y trae su propio encabezado.
   if (pathname === "/") return <>{children}</>;
