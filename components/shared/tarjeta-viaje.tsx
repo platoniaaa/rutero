@@ -67,9 +67,12 @@ export function TarjetaViaje({
           </p>
         </div>
 
-        <div className="flex shrink-0 flex-col items-end gap-2">
+        {/* Igual que en la tarjeta de oferta: en celular la placa y el monto no
+            caben al costado, así que forman una franja al pie —placa a la
+            izquierda, monto a la derecha— en vez de apilarse colgando. */}
+        <div className="flex w-full shrink-0 items-center justify-between gap-3 border-t border-line pt-3 sm:w-auto sm:flex-col sm:items-end sm:gap-2 sm:border-0 sm:pt-0">
           {vehiculo && <PlacaPatente patente={vehiculo.patente} tamano="sm" />}
-          <div className="text-right">
+          <div className="ml-auto text-right sm:ml-0">
             <p className="font-mono text-lg font-medium tabular-nums text-ink">
               {formatearCLP(montoDestacado)}
             </p>

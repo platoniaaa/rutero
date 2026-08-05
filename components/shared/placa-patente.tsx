@@ -4,7 +4,12 @@ import { formatearPatente } from "@/lib/utils/format";
 const TAMANOS = {
   sm: { patente: "text-base px-2 py-0.5", banda: "text-[7px] py-px" },
   md: { patente: "text-2xl px-3 py-1", banda: "text-[8px] py-0.5" },
-  lg: { patente: "text-4xl px-4 py-1.5", banda: "text-[10px] py-0.5" },
+  // Una placa `lg` mide casi 200px: en un celular de 375px no deja espacio
+  // para nada al lado, así que bajo `sm:` se comporta como `md`.
+  lg: {
+    patente: "text-2xl px-3 py-1 sm:text-4xl sm:px-4 sm:py-1.5",
+    banda: "text-[8px] py-0.5 sm:text-[10px]",
+  },
 } as const;
 
 /**
@@ -25,7 +30,10 @@ export function PlacaPatente({
   return (
     <span
       className={cn(
-        "inline-flex flex-col overflow-hidden rounded border-2 border-ink bg-white text-ink",
+        // `shrink-0`: la placa es un objeto de tamaño fijo. Sin esto el
+        // `overflow-hidden` anula su ancho mínimo automático y un hermano
+        // flex la aplasta hasta cortar la patente.
+        "inline-flex shrink-0 flex-col overflow-hidden rounded border-2 border-ink bg-white text-ink",
         className,
       )}
     >

@@ -225,7 +225,7 @@ export default function GruposAgenciaPage() {
         descripcion="Transportistas que ya tienen el grupo armado y buscan agencia. Es el flujo inverso: acá tú compras la demanda."
       />
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3">
         <Metrica etiqueta="Grupos abiertos" valor={grupos.length} />
         <Metrica
           etiqueta="Grupos que tomaste"

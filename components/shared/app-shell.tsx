@@ -3,23 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { BarraInferior } from "@/components/shared/barra-inferior";
 import { CentroNotificaciones } from "@/components/shared/centro-notificaciones";
 import { MenuCuenta } from "@/components/shared/menu-cuenta";
 import { cn } from "@/lib/utils";
-import {
-  INICIO_POR_ROL,
-  NAVEGACION,
-  rolDesdeRuta,
-  type ItemNav,
-} from "@/lib/navegacion";
-
-function esRutaActiva(pathname: string, item: ItemNav, items: ItemNav[]) {
-  if (pathname === item.href) return true;
-  // El índice del rol no se marca activo cuando estamos en una subruta suya.
-  const esIndice = items[0]?.href === item.href;
-  if (esIndice) return false;
-  return pathname.startsWith(`${item.href}/`);
-}
+import { esRutaActiva, INICIO_POR_ROL, NAVEGACION, rolDesdeRuta } from "@/lib/navegacion";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   // El sitio estático se sirve con barra final (/agencia/), pero los href del
@@ -36,11 +24,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-full flex-col">
-      <header className="surface-dark bg-base">
+      {/* Pegado arriba: en celular la cabecera es la única referencia fija de
+          dónde estás parado, y que se vaya con el scroll se siente web. */}
+      <header className="surface-dark sticky top-0 z-30 bg-base pt-[env(safe-area-inset-top)]">
         <div className="mx-auto flex w-full max-w-[1400px] items-center justify-between gap-3 px-4 py-3">
           <Link
             href={rolActivo ? INICIO_POR_ROL[rolActivo] : "/"}
-            className="font-display text-display-sm leading-none text-white"
+            className="flex min-h-11 items-center font-display text-display-sm leading-none text-white"
           >
             Rutero
           </Link>
@@ -51,10 +41,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
+        {/* El menú horizontal es de escritorio. En celular las secciones viven
+            en la barra inferior, donde llega el pulgar. */}
         {items.length > 0 && (
           <nav
             aria-label="Secciones"
-            className="border-t border-white/10 bg-base-soft"
+            className="hidden border-t border-white/10 bg-base-soft lg:block"
           >
             <ul className="mx-auto flex w-full max-w-[1400px] gap-1 overflow-x-auto px-4">
               {items.map((item) => {
@@ -85,10 +77,20 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       {/* overflow-x-clip: red de seguridad para que un elemento suelto no
           genere scroll lateral en celular. El contenido que sí necesita
-          desplazarse —tablas, nav de secciones— tiene su propio contenedor. */}
-      <main className="mx-auto w-full max-w-[1400px] flex-1 overflow-x-clip px-4 py-6">
+          desplazarse —tablas, nav de secciones— tiene su propio contenedor.
+          El padding de abajo deja libre la barra inferior. */}
+      <main
+        className={cn(
+          "mx-auto w-full max-w-[1400px] flex-1 overflow-x-clip px-4 py-5 sm:py-6",
+          rolActivo
+            ? "pb-[calc(5rem+env(safe-area-inset-bottom))] lg:pb-6"
+            : "pb-8",
+        )}
+      >
         {children}
       </main>
+
+      {rolActivo && <BarraInferior rol={rolActivo} />}
     </div>
   );
 }

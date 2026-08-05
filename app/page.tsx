@@ -457,14 +457,25 @@ export default function LandingPage() {
               Transporte de pasajeros para agencias de turismo en Chile.
             </p>
           </div>
-          <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/60">
-            <Link href="/entrar" className="hover:text-white">
+          {/* `min-h-11` en cada enlace: en celular eran blancos de 20px de
+              alto, menos de la mitad de lo que alcanza un pulgar. */}
+          <nav className="-my-2 flex flex-wrap gap-x-6 text-sm text-white/60">
+            <Link
+              href="/entrar"
+              className="flex min-h-11 items-center hover:text-white"
+            >
               Entrar
             </Link>
-            <Link href="#como-funciona" className="hover:text-white">
+            <Link
+              href="#como-funciona"
+              className="flex min-h-11 items-center hover:text-white"
+            >
               Cómo funciona
             </Link>
-            <Link href="#transportistas" className="hover:text-white">
+            <Link
+              href="#transportistas"
+              className="flex min-h-11 items-center hover:text-white"
+            >
               Transportistas
             </Link>
           </nav>

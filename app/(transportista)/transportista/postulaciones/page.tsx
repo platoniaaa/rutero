@@ -70,7 +70,7 @@ export default function PostulacionesPage() {
         descripcion="Todo lo que respondiste, esperando decisión de la agencia o ya resuelto."
       />
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3">
         <Metrica etiqueta="Esperando respuesta" valor={activas.length} />
         <Metrica etiqueta="Ganadas" valor={ganadas.length} tono="go" />
         <Metrica

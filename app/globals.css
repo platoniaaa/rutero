@@ -137,6 +137,24 @@
 
   html {
     @apply font-sans;
+
+    /* El destello gris que pinta el navegador al tocar es de los detalles que
+       más delatan que esto es una página y no una app. Se apaga acá y el
+       estado de toque se devuelve más abajo con `:active`. */
+    -webkit-tap-highlight-color: transparent;
+    /* Safari infla el texto al girar el teléfono si no se le dice que no. */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Solo en pantallas táctiles: sin puntero no hay `hover` que anticipe el
+     toque, así que el elemento se apaga mientras el dedo está encima. Es lo
+     que hace iOS y es lo que la gente espera al tocar algo. */
+  @media (hover: none) {
+    a:active,
+    button:active,
+    [role="button"]:active {
+      opacity: 0.6;
+    }
   }
 
   body {
@@ -158,23 +176,26 @@
   /* En celular todo lo que se toca mide al menos 44px. Los tamaños de shadcn
      van de 32 a 36, que sirven con mouse pero no con el pulgar. Se apunta a
      los data-slot para no inflar los enlaces de texto corrido. */
+  /* El selector va duplicado (`[data-slot][data-slot]`) a propósito: las
+     utilidades de Tailwind viven en una capa posterior a `base`, así que con
+     un solo atributo `h-8` y `w-fit` le ganaban a estas reglas. Se agrega
+     además `.group\/button` porque un Button usado como disparador `asChild`
+     de Radix pierde su `data-slot` —lo pisa el del trigger— pero nunca pierde
+     esa clase, que viene en la base del componente. */
   @media (max-width: 767px) {
-    [data-slot="button"],
-    [data-slot="select-trigger"],
-    [data-slot="input"],
-    [data-slot="tabs-trigger"] {
+    [data-slot="button"][data-slot],
+    .group\/button,
+    [data-slot="select-trigger"][data-slot],
+    [data-slot="input"][data-slot],
+    [data-slot="tabs-trigger"][data-slot] {
       min-height: 2.75rem;
     }
 
-    [data-slot="button"][data-size="icon"] {
+    [data-slot="button"][data-size="icon"],
+    .group\/button[data-size="icon"] {
       min-width: 2.75rem;
     }
 
-    /* Los selects vienen con ancho ajustado al contenido, que con el pulgar
-       es un blanco chico. En celular ocupan la línea completa. */
-    [data-slot="select-trigger"] {
-      width: 100%;
-    }
   }
 
   /* Una opción larga —"BCDF·12 · Mercedes-Benz Sprinter 516 · 19 pax"— no debe
@@ -184,6 +205,19 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+}
+
+/* Fuera de toda capa a propósito.
+   El select de shadcn trae `w-fit`, y con una opción larga —"BCDF·12 ·
+   Mercedes-Benz Sprinter 516 · 19 pax"— se estiraba 353px dentro de una
+   columna de 301 y se salía de la pantalla. Subir la especificidad no sirve:
+   las capas mandan por sobre ella, y `utilities` va después de `base`, así
+   que ninguna regla dentro de `base` le puede ganar a una utilidad. El CSS
+   sin capa sí, porque gana a todo lo que esté en una. */
+@media (max-width: 767px) {
+  [data-slot="select-trigger"] {
+    width: 100%;
   }
 }
 

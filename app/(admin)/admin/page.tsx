@@ -133,7 +133,7 @@ export default function MetricasPage() {
         descripcion="Cómo se está moviendo el marketplace. Con estos números se decide si el modelo de comisión y la ventana de cierre están bien calibrados."
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Metrica
           etiqueta="GMV"
           valor={formatearCLP(gmv)}
@@ -158,7 +158,7 @@ export default function MetricasPage() {
         />
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Metrica
           etiqueta="Ofertas publicadas"
           valor={publicadas.length}

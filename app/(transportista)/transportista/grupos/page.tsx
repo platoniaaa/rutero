@@ -88,7 +88,7 @@ export default function GruposTransportistaPage() {
         }
       />
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3">
         <Metrica etiqueta="Grupos abiertos" valor={abiertos.length} />
         <Metrica etiqueta="Adjudicados" valor={adjudicados.length} tono="go" />
         <Metrica

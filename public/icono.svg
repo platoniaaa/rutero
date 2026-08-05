@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Rutero">
+  <title>Rutero</title>
+  <!-- Icono de la app. Sin tipografía a propósito: una fuente web no está
+       disponible cuando el sistema dibuja el ícono en la pantalla de inicio.
+       La marca es la placa patente, que es el objeto que agencias y
+       transportistas reconocen al instante. El contenido se mantiene dentro
+       del 80% central para que un recorte circular (maskable) no lo muerda. -->
+  <rect width="512" height="512" fill="#0b3c5d"/>
+  <g>
+    <rect x="106" y="146" width="300" height="220" rx="26" fill="#ffffff"/>
+    <path d="M106 172a26 26 0 0 1 26-26h248a26 26 0 0 1 26 26v34H106z" fill="#14283a"/>
+    <g fill="#14283a">
+      <rect x="140" y="246" width="34" height="82" rx="9"/>
+      <rect x="190" y="246" width="34" height="82" rx="9"/>
+      <rect x="240" y="246" width="34" height="82" rx="9"/>
+      <rect x="290" y="246" width="34" height="82" rx="9"/>
+    </g>
+    <rect x="340" y="246" width="34" height="82" rx="9" fill="#f4a259"/>
+  </g>
+</svg>

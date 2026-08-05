@@ -75,7 +75,7 @@ export default function ViajesTransportistaPage() {
         descripcion="Los viajes que te adjudicaron, con su hoja de ruta y el chat con la agencia."
       />
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3">
         <Metrica etiqueta="Viajes próximos" valor={proximos.length} />
         <Metrica
           etiqueta="Retenido en escrow"

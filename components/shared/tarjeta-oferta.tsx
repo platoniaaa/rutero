@@ -87,22 +87,29 @@ export function TarjetaOferta({
           </p>
         </div>
 
-        <div className="shrink-0 text-right">
-          <p className="font-mono text-xl font-medium tabular-nums text-ink">
-            {formatearCLP(oferta.presupuestoReferencial)}
-          </p>
-          <p className="font-mono text-sm tabular-nums text-meta">
-            ≈ {formatearCLP(montoPorPasajero(oferta.presupuestoReferencial, oferta.cantidadPasajeros))}
-            /pax
-          </p>
-          {abierta && (
-            <p className="mt-1 text-xs text-meta">
-              Cierra en{" "}
-              <span className="font-mono tabular-nums">
-                {formatearCuentaRegresiva(oferta.expiraEn, ahora)}
-              </span>
+        {/* En celular el precio no cabe al lado del título: se envolvía solo y
+            quedaba colgando a la derecha en una columna de 100px. Acá pasa a
+            ser una franja propia al pie, en una línea. Desde `sm` vuelve a la
+            columna derecha, que es donde se comparan varias ofertas de un
+            vistazo. */}
+        <div className="w-full shrink-0 border-t border-line pt-3 sm:w-auto sm:border-0 sm:pt-0 sm:text-right">
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 sm:block">
+            <p className="font-mono text-xl font-medium tabular-nums text-ink">
+              {formatearCLP(oferta.presupuestoReferencial)}
             </p>
-          )}
+            <p className="font-mono text-sm tabular-nums text-meta">
+              ≈ {formatearCLP(montoPorPasajero(oferta.presupuestoReferencial, oferta.cantidadPasajeros))}
+              /pax
+            </p>
+            {abierta && (
+              <p className="ml-auto text-xs text-meta sm:mt-1 sm:ml-0">
+                Cierra en{" "}
+                <span className="font-mono tabular-nums">
+                  {formatearCuentaRegresiva(oferta.expiraEn, ahora)}
+                </span>
+              </p>
+            )}
+          </div>
         </div>
       </div>
 

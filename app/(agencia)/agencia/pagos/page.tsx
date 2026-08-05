@@ -78,7 +78,7 @@ export default function PagosAgenciaPage() {
         descripcion="La agencia no paga fee de plataforma: pagas el monto del viaje y Rutero le descuenta su comisión al transportista."
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Metrica
           etiqueta="Esperando tu pago"
           valor={porPagar.length}

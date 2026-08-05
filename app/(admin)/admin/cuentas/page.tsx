@@ -71,7 +71,7 @@ export default function CuentasPage() {
         descripcion="Agencias y transportistas registrados, con su estado de verificación y sus papeles."
       />
 
-      <div className="grid gap-4 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-4">
         <Metrica etiqueta="Agencias" valor={datos.agencias.length} />
         <Metrica etiqueta="Transportistas" valor={datos.transportistas.length} />
         <Metrica etiqueta="Verificados" valor={verificados} tono="go" />

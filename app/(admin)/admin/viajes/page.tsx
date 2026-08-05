@@ -91,7 +91,7 @@ export default function AdminViajesPage() {
         descripcion="Todos los viajes de la plataforma. Las disputas congelan el pago hasta que se resuelvan acá."
       />
 
-      <div className="grid gap-4 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-4">
         <Metrica etiqueta="Viajes totales" valor={viajes.length} />
         <Metrica
           etiqueta="Disputas abiertas"

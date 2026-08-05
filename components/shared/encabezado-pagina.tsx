@@ -16,20 +16,34 @@ export function EncabezadoPagina({
   return (
     <header
       className={cn(
-        "flex flex-wrap items-end justify-between gap-4 border-b border-line pb-4",
+        "flex flex-wrap items-end justify-between gap-3 border-b border-line pb-3 sm:gap-4 sm:pb-4",
         className,
       )}
     >
       <div className="min-w-0">
+        {/* En celular el rol ya lo dicen el menú de cuenta y la barra de
+            abajo, y la bajada es texto que explica la pantalla: las apps no
+            las traen. Ambas se van bajo `sm` para que el contenido parta
+            arriba en vez de a un cuarto de pantalla. */}
         {seccion && (
-          <p className="text-eyebrow font-display text-meta">{seccion}</p>
+          <p className="hidden text-eyebrow font-display text-meta sm:block">
+            {seccion}
+          </p>
         )}
         <h1 className="font-display text-display text-ink">{titulo}</h1>
         {descripcion && (
-          <p className="mt-1 max-w-2xl text-sm text-meta">{descripcion}</p>
+          <p className="mt-1 hidden max-w-2xl text-sm text-meta sm:block">
+            {descripcion}
+          </p>
         )}
       </div>
-      {acciones && <div className="flex flex-wrap gap-2">{acciones}</div>}
+      {acciones && (
+        // En pantalla chica las acciones ocupan la línea completa y se
+        // reparten el ancho: blancos grandes para el pulgar.
+        <div className="flex w-full flex-wrap gap-2 [&>*]:flex-1 sm:w-auto sm:[&>*]:flex-none">
+          {acciones}
+        </div>
+      )}
     </header>
   );
 }

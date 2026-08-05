@@ -82,7 +82,7 @@ export default function PanelTransportistaPage() {
         descripcion="Tu semana, lo que puedes tomar y lo que tienes por cobrar."
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Metrica etiqueta="Viajes esta semana" valor={agenda.length} />
         <Metrica
           etiqueta="Ofertas que calzan"

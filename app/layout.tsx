@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { AppShell } from "@/components/shared/app-shell";
@@ -24,6 +24,27 @@ export const metadata: Metadata = {
   title: "Rutero",
   description:
     "Marketplace que conecta agencias de turismo con transportistas de pasajeros en Chile.",
+  applicationName: "Rutero",
+  // Agregada a la pantalla de inicio en iPhone, abre sin barra del navegador.
+  appleWebApp: {
+    capable: true,
+    title: "Rutero",
+    statusBarStyle: "black-translucent",
+  },
+  other: {
+    // Next emite el nombre moderno (`mobile-web-app-capable`), que es el que
+    // lee Android. Safari sigue mirando el prefijado, así que va a mano.
+    "apple-mobile-web-app-capable": "yes",
+  },
+};
+
+export const viewport: Viewport = {
+  // Tiñe la barra de estado del teléfono del azul cordillera, así el borde
+  // superior no corta con una franja blanca.
+  themeColor: "#0b3c5d",
+  // El contenido llega hasta los bordes físicos; el encabezado y la barra
+  // inferior se apartan solos con `env(safe-area-inset-*)`.
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

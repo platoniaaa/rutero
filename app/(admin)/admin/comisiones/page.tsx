@@ -74,7 +74,7 @@ export default function ComisionesPage() {
         descripcion="Los porcentajes que Rutero cobra en cada flujo. Se aplican a las adjudicaciones nuevas, no a las ya cerradas."
       />
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3">
         <Metrica
           etiqueta="Comisión de viaje"
           valor={`${datos.comisiones.viajePct}%`}

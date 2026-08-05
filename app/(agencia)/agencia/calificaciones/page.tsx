@@ -58,7 +58,7 @@ export default function CalificacionesAgenciaPage() {
         descripcion="Los transportistas te califican en claridad del brief, puntualidad de los pasajeros y pago."
       />
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3">
         <Metrica
           etiqueta="Tu promedio"
           valor={

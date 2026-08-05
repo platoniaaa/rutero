@@ -99,7 +99,7 @@ export default function VerificacionPage() {
         descripcion="Aprueba o rechaza los documentos que suben los transportistas. Un documento crítico vencido bloquea la postulación."
       />
 
-      <div className="grid gap-4 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-4">
         <Metrica etiqueta="Esperando revisión" valor={pendientes.length} tono="signal" />
         <Metrica etiqueta="Vencidos" valor={vencidos.length} tono="stop" />
         <Metrica etiqueta="Rechazados" valor={rechazados.length} />

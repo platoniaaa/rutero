@@ -60,7 +60,10 @@ export default function EntrarPage() {
                 <span className="block truncate font-medium text-ink">
                   {nombreDe(rol)}
                 </span>
-                <span className="block truncate text-sm text-meta">
+                {/* Sin `truncate`: en celular la línea cabía a la mitad y
+                    cortaba justo la frase que explica para qué sirve el
+                    perfil. Que envuelva en dos líneas es mejor que perderla. */}
+                <span className="block text-sm text-meta">
                   {DESCRIPCION_ROL[rol]}
                 </span>
               </span>
@@ -75,7 +78,7 @@ export default function EntrarPage() {
 
       <Link
         href="/"
-        className="mx-auto flex w-fit items-center gap-1.5 text-sm text-meta underline-offset-4 hover:text-ink hover:underline"
+        className="mx-auto flex min-h-11 w-fit items-center gap-1.5 px-3 text-sm text-meta underline-offset-4 hover:text-ink hover:underline"
       >
         <ArrowLeft className="size-4" aria-hidden />
         Volver al inicio

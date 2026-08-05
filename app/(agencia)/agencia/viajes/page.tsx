@@ -69,7 +69,7 @@ export default function ViajesAgenciaPage() {
         descripcion="Los viajes que ya tienen transportista asignado, desde el pago hasta el cierre."
       />
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3">
         <Metrica etiqueta="Viajes activos" valor={activos.length} />
         <Metrica
           etiqueta="Esperando tu pago"
