@@ -8,6 +8,11 @@ import { BadgeEstado } from "@/components/shared/badge-estado";
 import { EncabezadoPagina, Metrica } from "@/components/shared/encabezado-pagina";
 import { ListaCargando, ListaVacia } from "@/components/shared/estado-lista";
 import { PlacaPatente } from "@/components/shared/placa-patente";
+import {
+  FilaTarjeta,
+  ListaTarjetas,
+  TablaEscritorio,
+} from "@/components/shared/tabla-responsiva";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -212,8 +217,62 @@ export default function AdminViajesPage() {
       {visibles.length === 0 ? (
         <ListaVacia titulo="Nada en este filtro" detalle="Prueba con otro estado." />
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-line">
-          <Table>
+        <>
+          {/* La tabla completa medía 1.231px en celular. Cada viaje pasa a ser
+              una tarjeta; la tabla sigue en pantalla grande, que es donde
+              comparar montos y comisiones en columna sirve de algo. */}
+          <ListaTarjetas>
+            {visibles.map((v) => {
+              const oferta = buscarOferta(datos, v.ofertaId);
+              const vehiculo = buscarVehiculo(datos, v.vehiculoId);
+              const pago = pagoDeViaje(datos, v.id);
+              return (
+                <FilaTarjeta
+                  key={v.id}
+                  titulo={oferta?.titulo}
+                  subtitulo={
+                    <>
+                      <span className="font-mono">{oferta?.codigo}</span>
+                      {oferta && <> · {formatearFecha(oferta.fechaHoraSalida)}</>}
+                    </>
+                  }
+                  destacado={formatearCLP(v.montoFinal)}
+                  detalleDestacado={`Comisión ${formatearCLP(v.comision)}`}
+                  datos={[
+                    {
+                      etiqueta: "Agencia",
+                      valor: buscarAgencia(datos, v.agenciaId)?.razonSocial,
+                    },
+                    {
+                      etiqueta: "Transportista",
+                      valor: buscarTransportista(datos, v.carrierId)?.nombre,
+                    },
+                    {
+                      etiqueta: "Vehículo",
+                      valor: vehiculo && (
+                        <PlacaPatente patente={vehiculo.patente} tamano="sm" />
+                      ),
+                    },
+                  ]}
+                  pie={
+                    <div className="flex flex-wrap gap-2">
+                      <BadgeEstado tono={TONO_VIAJE[v.estado]}>
+                        {ETIQUETA_ESTADO_VIAJE[v.estado]}
+                      </BadgeEstado>
+                      {pago && (
+                        <BadgeEstado tono={TONO_PAGO[pago.estado]}>
+                          {ETIQUETA_ESTADO_PAGO[pago.estado]}
+                        </BadgeEstado>
+                      )}
+                    </div>
+                  }
+                />
+              );
+            })}
+          </ListaTarjetas>
+
+          <TablaEscritorio>
+            <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Viaje</TableHead>
@@ -274,7 +333,8 @@ export default function AdminViajesPage() {
               })}
             </TableBody>
           </Table>
-        </div>
+          </TablaEscritorio>
+        </>
       )}
     </div>
   );

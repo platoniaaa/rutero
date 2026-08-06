@@ -22,6 +22,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  FilaTarjeta,
+  ListaTarjetas,
+  TablaEscritorio,
+} from "@/components/shared/tabla-responsiva";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRutero } from "@/lib/mock/store";
 import {
@@ -40,6 +45,64 @@ const ESTADOS: EstadoVerificacion[] = [
   "verificada",
   "rechazada",
 ];
+
+/** El mismo selector sirve en la tabla de escritorio y en la tarjeta. */
+function SelectorVerificacion({
+  valor,
+  onCambiar,
+}: {
+  valor: EstadoVerificacion;
+  onCambiar: (estado: EstadoVerificacion) => void;
+}) {
+  return (
+    <Select value={valor} onValueChange={(v) => onCambiar(v as EstadoVerificacion)}>
+      <SelectTrigger size="sm" className="w-40">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {ESTADOS.map((e) => (
+          <SelectItem key={e} value={e}>
+            {ETIQUETA_ESTADO_VERIFICACION[e]}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+}
+
+function InsigniaDocumentos({
+  resumen,
+}: {
+  resumen: { vencidos: number; pendientes: number; total: number };
+}) {
+  if (resumen.vencidos > 0) {
+    return <BadgeEstado tono="alerta">{resumen.vencidos} vencidos</BadgeEstado>;
+  }
+  if (resumen.pendientes > 0) {
+    return (
+      <BadgeEstado tono="espera">{resumen.pendientes} en revisión</BadgeEstado>
+    );
+  }
+  if (resumen.total === 0) {
+    return <BadgeEstado tono="neutro">Sin subir</BadgeEstado>;
+  }
+  return <BadgeEstado tono="listo">Al día</BadgeEstado>;
+}
+
+/** "1 vehículo" / "2 vehículos", sin el "1 vehículos" que delata la plantilla. */
+function plural(n: number, singular: string, plural: string) {
+  return `${n} ${n === 1 ? singular : plural}`;
+}
+
+function Rating({ valor }: { valor: number }) {
+  if (valor <= 0) return <span className="text-meta">—</span>;
+  return (
+    <span className="flex items-center justify-end gap-1">
+      <Star className="size-3.5 text-signal" aria-hidden />
+      <span className="font-mono tabular-nums">{valor.toFixed(1)}</span>
+    </span>
+  );
+}
 
 export default function CuentasPage() {
   const { datos, cargando } = useDatos();
@@ -93,7 +156,49 @@ export default function CuentasPage() {
         </TabsList>
 
         <TabsContent value="transportistas" className="mt-4">
-          <div className="overflow-x-auto rounded-lg border border-line">
+          {/* En celular la tabla medía 1.054px y había que deslizarla de lado:
+              cada fila pasa a ser una tarjeta. */}
+          <ListaTarjetas>
+            {datos.transportistas.map((t) => {
+              const resumen = resumirDocumentos(
+                documentosDelTransportista(datos, t.id),
+                ahora,
+              );
+              return (
+                <FilaTarjeta
+                  key={t.id}
+                  titulo={t.nombre}
+                  subtitulo={`${t.esEmpresa ? "Empresa" : "Independiente"} · ${plural(t.viajesCompletados, "viaje", "viajes")}`}
+                  destacado={<Rating valor={t.ratingPromedio} />}
+                  datos={[
+                    { etiqueta: "RUT", valor: formatearRut(t.rut) },
+                    { etiqueta: "Zonas", valor: t.zonasOperacion.join(", ") },
+                    {
+                      etiqueta: "Flota",
+                      valor: `${plural(flotaDe(datos, t.id).length, "vehículo", "vehículos")} · ${plural(conductoresDe(datos, t.id).length, "conductor", "conductores")}`,
+                    },
+                    {
+                      etiqueta: "Documentos",
+                      valor: <InsigniaDocumentos resumen={resumen} />,
+                    },
+                  ]}
+                  pie={
+                    <SelectorVerificacion
+                      valor={t.estadoVerificacion}
+                      onCambiar={(estado) => {
+                        actualizarVerificacion("transportista", t.id, estado);
+                        toast.success(
+                          `${t.nombre}: ${ETIQUETA_ESTADO_VERIFICACION[estado].toLowerCase()}`,
+                        );
+                      }}
+                    />
+                  }
+                />
+              );
+            })}
+          </ListaTarjetas>
+
+          <TablaEscritorio>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -135,68 +240,59 @@ export default function CuentasPage() {
                         {conductoresDe(datos, t.id).length}c
                       </TableCell>
                       <TableCell className="text-right">
-                        {t.ratingPromedio > 0 ? (
-                          <span className="flex items-center justify-end gap-1">
-                            <Star className="size-3.5 text-signal" aria-hidden />
-                            <span className="font-mono tabular-nums">
-                              {t.ratingPromedio.toFixed(1)}
-                            </span>
-                          </span>
-                        ) : (
-                          <span className="text-meta">—</span>
-                        )}
+                        <Rating valor={t.ratingPromedio} />
                       </TableCell>
                       <TableCell>
-                        {resumen.vencidos > 0 ? (
-                          <BadgeEstado tono="alerta">
-                            {resumen.vencidos} vencidos
-                          </BadgeEstado>
-                        ) : resumen.pendientes > 0 ? (
-                          <BadgeEstado tono="espera">
-                            {resumen.pendientes} en revisión
-                          </BadgeEstado>
-                        ) : resumen.total === 0 ? (
-                          <BadgeEstado tono="neutro">Sin subir</BadgeEstado>
-                        ) : (
-                          <BadgeEstado tono="listo">Al día</BadgeEstado>
-                        )}
+                        <InsigniaDocumentos resumen={resumen} />
                       </TableCell>
                       <TableCell>
-                        <Select
-                          value={t.estadoVerificacion}
-                          onValueChange={(v) => {
-                            actualizarVerificacion(
-                              "transportista",
-                              t.id,
-                              v as EstadoVerificacion,
-                            );
+                        <SelectorVerificacion
+                          valor={t.estadoVerificacion}
+                          onCambiar={(estado) => {
+                            actualizarVerificacion("transportista", t.id, estado);
                             toast.success(
-                              `${t.nombre}: ${ETIQUETA_ESTADO_VERIFICACION[v as EstadoVerificacion].toLowerCase()}`,
+                              `${t.nombre}: ${ETIQUETA_ESTADO_VERIFICACION[estado].toLowerCase()}`,
                             );
                           }}
-                        >
-                          <SelectTrigger size="sm" className="w-40">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {ESTADOS.map((e) => (
-                              <SelectItem key={e} value={e}>
-                                {ETIQUETA_ESTADO_VERIFICACION[e]}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        />
                       </TableCell>
                     </TableRow>
                   );
                 })}
               </TableBody>
             </Table>
-          </div>
+          </TablaEscritorio>
         </TabsContent>
 
         <TabsContent value="agencias" className="mt-4">
-          <div className="overflow-x-auto rounded-lg border border-line">
+          <ListaTarjetas>
+            {datos.agencias.map((a) => (
+              <FilaTarjeta
+                key={a.id}
+                titulo={a.razonSocial}
+                subtitulo={a.contacto.nombre}
+                destacado={<Rating valor={a.ratingPromedio} />}
+                datos={[
+                  { etiqueta: "RUT", valor: formatearRut(a.rut) },
+                  { etiqueta: "Giro", valor: a.giro },
+                  { etiqueta: "Viajes", valor: a.viajesCompletados },
+                ]}
+                pie={
+                  <SelectorVerificacion
+                    valor={a.estadoVerificacion}
+                    onCambiar={(estado) => {
+                      actualizarVerificacion("agencia", a.id, estado);
+                      toast.success(
+                        `${a.razonSocial}: ${ETIQUETA_ESTADO_VERIFICACION[estado].toLowerCase()}`,
+                      );
+                    }}
+                  />
+                }
+              />
+            ))}
+          </ListaTarjetas>
+
+          <TablaEscritorio>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -225,44 +321,24 @@ export default function CuentasPage() {
                       {a.viajesCompletados}
                     </TableCell>
                     <TableCell className="text-right">
-                      <span className="flex items-center justify-end gap-1">
-                        <Star className="size-3.5 text-signal" aria-hidden />
-                        <span className="font-mono tabular-nums">
-                          {a.ratingPromedio.toFixed(1)}
-                        </span>
-                      </span>
+                      <Rating valor={a.ratingPromedio} />
                     </TableCell>
                     <TableCell>
-                      <Select
-                        value={a.estadoVerificacion}
-                        onValueChange={(v) => {
-                          actualizarVerificacion(
-                            "agencia",
-                            a.id,
-                            v as EstadoVerificacion,
-                          );
+                      <SelectorVerificacion
+                        valor={a.estadoVerificacion}
+                        onCambiar={(estado) => {
+                          actualizarVerificacion("agencia", a.id, estado);
                           toast.success(
-                            `${a.razonSocial}: ${ETIQUETA_ESTADO_VERIFICACION[v as EstadoVerificacion].toLowerCase()}`,
+                            `${a.razonSocial}: ${ETIQUETA_ESTADO_VERIFICACION[estado].toLowerCase()}`,
                           );
                         }}
-                      >
-                        <SelectTrigger size="sm" className="w-40">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {ESTADOS.map((e) => (
-                            <SelectItem key={e} value={e}>
-                              {ETIQUETA_ESTADO_VERIFICACION[e]}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      />
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
-          </div>
+          </TablaEscritorio>
         </TabsContent>
       </Tabs>
     </div>

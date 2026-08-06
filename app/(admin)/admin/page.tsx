@@ -5,6 +5,11 @@ import { ArrowRight } from "lucide-react";
 
 import { EncabezadoPagina, Metrica } from "@/components/shared/encabezado-pagina";
 import { ListaCargando } from "@/components/shared/estado-lista";
+import {
+  FilaTarjeta,
+  ListaTarjetas,
+  TablaEscritorio,
+} from "@/components/shared/tabla-responsiva";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -193,7 +198,31 @@ export default function MetricasPage() {
           </p>
         </div>
 
-        <div className="overflow-x-auto rounded-lg border border-line">
+        {/* Seis columnas de montos no caben en un celular: cada bloque pasa a
+            ser una tarjeta con el promedio destacado y el rango debajo. */}
+        <ListaTarjetas>
+          {porBloque.map((b) => (
+            <FilaTarjeta
+              key={b.bloque}
+              titulo={ETIQUETA_BLOQUE[b.bloque]}
+              subtitulo={`${b.ofertas} ofertas · ${b.adjudicadas} adjudicadas`}
+              destacado={b.promedio > 0 ? formatearCLP(b.promedio) : "—"}
+              detalleDestacado={b.promedio > 0 ? "promedio" : undefined}
+              datos={[
+                {
+                  etiqueta: "Mínimo",
+                  valor: b.minimo > 0 ? formatearCLP(b.minimo) : "—",
+                },
+                {
+                  etiqueta: "Máximo",
+                  valor: b.maximo > 0 ? formatearCLP(b.maximo) : "—",
+                },
+              ]}
+            />
+          ))}
+        </ListaTarjetas>
+
+        <TablaEscritorio>
           <Table>
             <TableHeader>
               <TableRow>
@@ -230,7 +259,7 @@ export default function MetricasPage() {
               ))}
             </TableBody>
           </Table>
-        </div>
+        </TablaEscritorio>
       </section>
 
       <section className="grid gap-4 sm:grid-cols-3">
