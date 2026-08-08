@@ -161,16 +161,19 @@ export default function LandingPage() {
               </Button>
             </div>
 
+            {/* La comisión no va acá: el hero le habla al cliente, no al
+                modelo de negocio. El 5% sigue en "Para transportistas", que
+                es el público que lo paga y necesita verlo antes de sumarse. */}
             <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-6">
               <div>
                 <dt className="text-eyebrow font-display text-white/60">
-                  Comisión
+                  Pago protegido
                 </dt>
                 <dd className="font-mono text-display-sm tabular-nums text-white">
-                  {COMISION_VIAJE_PCT}%
+                  100%
                 </dd>
                 <p className="text-xs text-white/60">
-                  La agencia no paga fee
+                  Retenido hasta que el grupo vuelve
                 </p>
               </div>
               <div>
