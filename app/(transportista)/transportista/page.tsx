@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { AlertTriangle, ArrowRight, Bus, Inbox, Star } from "lucide-react";
+import { AlertTriangle, ArrowRight, Bus, Inbox, Star, Truck } from "lucide-react";
 
 import { EncabezadoPagina, Metrica } from "@/components/shared/encabezado-pagina";
 import { ListaCargando, ListaVacia } from "@/components/shared/estado-lista";
@@ -12,6 +12,7 @@ import {
   agencia as buscarAgencia,
   documentosDelTransportista,
   evaluarOfertaParaCarrier,
+  flotaDe,
   oferta as buscarOferta,
   ofertasAbiertas,
   resumirDocumentos,
@@ -74,6 +75,10 @@ export default function PanelTransportistaPage() {
   const bloqueado =
     cuenta?.estadoVerificacion !== "verificada" || resumenDocs.vencidos > 0;
 
+  // Cuenta recién creada: sin flota todavía. La bienvenida ordena los
+  // primeros pasos y reemplaza al aviso de bloqueo, que sin contexto asusta.
+  const sinFlota = flotaDe(datos, carrierId).length === 0;
+
   return (
     <div className="flex flex-col gap-6">
       <EncabezadoPagina
@@ -81,6 +86,37 @@ export default function PanelTransportistaPage() {
         titulo="Panel"
         descripcion="Tu semana, lo que puedes tomar y lo que tienes por cobrar."
       />
+
+      {sinFlota && (
+        <section className="rounded-xl border border-signal/40 bg-signal-soft p-5 sm:p-6">
+          <p className="text-eyebrow font-display text-signal-ink">
+            Te damos la bienvenida
+          </p>
+          <h2 className="mt-1 font-titular text-xl leading-tight font-bold text-ink">
+            Carga tu vehículo para empezar a recibir viajes
+          </h2>
+          <ol className="mt-3 flex max-w-xl flex-col gap-1.5 text-sm text-meta">
+            <li className="flex gap-2">
+              <span className="font-mono text-xs leading-5 text-signal-ink">1.</span>
+              Agrega tu vehículo, tu licencia y tus documentos.
+            </li>
+            <li className="flex gap-2">
+              <span className="font-mono text-xs leading-5 text-signal-ink">2.</span>
+              El equipo los revisa y tu cuenta queda verificada.
+            </li>
+            <li className="flex gap-2">
+              <span className="font-mono text-xs leading-5 text-signal-ink">3.</span>
+              Postulas a los viajes que calcen con tu agenda.
+            </li>
+          </ol>
+          <Button className="mt-4" asChild>
+            <Link href="/transportista/flota">
+              <Truck className="size-4" aria-hidden />
+              Cargar mi vehículo
+            </Link>
+          </Button>
+        </section>
+      )}
 
       <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Metrica etiqueta="Viajes esta semana" valor={agenda.length} />
@@ -98,7 +134,7 @@ export default function PanelTransportistaPage() {
         />
       </div>
 
-      {bloqueado && (
+      {bloqueado && !sinFlota && (
         <div
           role="alert"
           className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-stop/40 bg-stop-soft p-4"

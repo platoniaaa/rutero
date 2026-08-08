@@ -160,7 +160,11 @@ export default function PerfilTransportistaPage() {
           <div>
             <dt className="text-eyebrow font-display text-meta">RUT</dt>
             <dd className="mt-1 font-mono tabular-nums text-ink">
-              {formatearRut(cuenta.rut)}
+              {cuenta.rut ? (
+                formatearRut(cuenta.rut)
+              ) : (
+                <span className="font-sans text-meta">Por completar</span>
+              )}
             </dd>
           </div>
           <div className="sm:col-span-2">
@@ -168,6 +172,9 @@ export default function PerfilTransportistaPage() {
               Zonas donde operas
             </dt>
             <dd className="mt-2 flex flex-wrap gap-1.5">
+              {cuenta.zonasOperacion.length === 0 && (
+                <span className="text-sm text-meta">Por completar</span>
+              )}
               {cuenta.zonasOperacion.map((zona) => (
                 <span
                   key={zona}
@@ -207,7 +214,9 @@ export default function PerfilTransportistaPage() {
             <dt className="text-eyebrow font-display text-meta">Correo</dt>
             <dd className="mt-1 flex items-center gap-2 break-all text-ink">
               <Mail className="size-4 shrink-0 text-meta" aria-hidden />
-              {cuenta.contacto.email}
+              {cuenta.contacto.email || (
+                <span className="text-meta">Por completar</span>
+              )}
             </dd>
           </div>
         </dl>

@@ -70,6 +70,17 @@ function codigoAbordaje(semilla: string): string {
 }
 
 type Acciones = {
+  // --- Cuentas ---
+  crearCuentaAgencia: (entrada: {
+    razonSocial: string;
+    nombreContacto: string;
+    telefono: string;
+  }) => Id;
+  crearCuentaTransportista: (entrada: {
+    nombre: string;
+    telefono: string;
+  }) => Id;
+
   // --- Ofertas ---
   crearOferta: (
     borrador: Omit<Oferta, "id" | "codigo" | "createdAt" | "estado">,
@@ -172,6 +183,65 @@ export const useRutero = create<RuteroState>()(
     (set, get) => ({
       datos: crearSeed(new Date()),
       sesion: SESION_DEMO,
+
+      // ---------------------------------------------------------------------
+      // Cuentas
+      // ---------------------------------------------------------------------
+      // El onboarding pide lo mínimo para empezar a usar la plataforma; RUT,
+      // giro y dirección se completan después desde el perfil. La cuenta nueva
+      // queda encarnada de inmediato (la sesión apunta a ella).
+      crearCuentaAgencia: ({ razonSocial, nombreContacto, telefono }) => {
+        const id = nuevoId("ag", get().datos.agencias);
+        set((s) => ({
+          datos: {
+            ...s.datos,
+            agencias: [
+              ...s.datos.agencias,
+              {
+                id,
+                razonSocial,
+                rut: "",
+                giro: "Agencia de viajes y turismo",
+                logo: "",
+                contacto: { nombre: nombreContacto, telefono, email: "" },
+                direccion: "",
+                estadoVerificacion: "sin_enviar" as const,
+                ratingPromedio: 0,
+                viajesCompletados: 0,
+              },
+            ],
+          },
+          sesion: { ...s.sesion, agenciaId: id },
+        }));
+        return id;
+      },
+
+      crearCuentaTransportista: ({ nombre, telefono }) => {
+        const id = nuevoId("tr", get().datos.transportistas);
+        set((s) => ({
+          datos: {
+            ...s.datos,
+            transportistas: [
+              ...s.datos.transportistas,
+              {
+                id,
+                nombre,
+                rut: "",
+                // Independiente o empresa se distingue por cuántos vehículos
+                // cuelgan de la cuenta, no en el registro.
+                esEmpresa: false,
+                zonasOperacion: [],
+                estadoVerificacion: "sin_enviar" as const,
+                ratingPromedio: 0,
+                viajesCompletados: 0,
+                contacto: { nombre, telefono, email: "" },
+              },
+            ],
+          },
+          sesion: { ...s.sesion, carrierId: id },
+        }));
+        return id;
+      },
 
       // ---------------------------------------------------------------------
       // Ofertas

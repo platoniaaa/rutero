@@ -61,6 +61,10 @@ export default function PanelAgenciaPage() {
   );
   const porCalificar = viajesPorCalificar(datos, agenciaId, "agencia");
 
+  // Cuenta recién creada: todavía no publica ni tiene viajes. La bienvenida
+  // deja un solo siguiente paso a la vista.
+  const sinActividad = ofertas.length === 0 && viajes.length === 0;
+
   return (
     <div className="flex flex-col gap-6">
       <EncabezadoPagina
@@ -74,6 +78,26 @@ export default function PanelAgenciaPage() {
           </Button>
         }
       />
+
+      {sinActividad && (
+        <section className="rounded-xl border border-signal/40 bg-signal-soft p-5 sm:p-6">
+          <p className="text-eyebrow font-display text-signal-ink">
+            Te damos la bienvenida
+          </p>
+          <h2 className="mt-1 font-titular text-xl leading-tight font-bold text-ink">
+            Publica tu primer viaje
+          </h2>
+          <p className="mt-2 max-w-xl text-sm text-meta">
+            Ruta, fecha, cuántos pasajeros y tu presupuesto: te toma dos
+            minutos. Los transportistas de la zona lo ven al instante y sus
+            respuestas llegan acá, listas para comparar.
+          </p>
+          <Button className="mt-4" onClick={() => setWizard(true)}>
+            <Plus className="size-4" aria-hidden />
+            Publicar mi primer viaje
+          </Button>
+        </section>
+      )}
 
       <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Metrica

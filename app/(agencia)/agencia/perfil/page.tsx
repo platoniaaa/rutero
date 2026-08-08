@@ -59,9 +59,13 @@ export default function PerfilAgenciaPage() {
       <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3">
         <Metrica
           etiqueta="Calificación"
-          valor={cuenta.ratingPromedio.toFixed(1)}
-          detalle="Promedio de los transportistas"
-          tono="go"
+          valor={cuenta.ratingPromedio > 0 ? cuenta.ratingPromedio.toFixed(1) : "—"}
+          detalle={
+            cuenta.ratingPromedio > 0
+              ? "Promedio de los transportistas"
+              : "Todavía sin calificaciones"
+          }
+          tono={cuenta.ratingPromedio > 0 ? "go" : "neutro"}
         />
         <Metrica
           etiqueta="Viajes completados"
@@ -91,7 +95,11 @@ export default function PerfilAgenciaPage() {
           <div>
             <dt className="text-eyebrow font-display text-meta">RUT</dt>
             <dd className="mt-1 font-mono tabular-nums text-ink">
-              {formatearRut(cuenta.rut)}
+              {cuenta.rut ? (
+                formatearRut(cuenta.rut)
+              ) : (
+                <span className="font-sans text-meta">Por completar</span>
+              )}
             </dd>
           </div>
           <div>
@@ -102,7 +110,9 @@ export default function PerfilAgenciaPage() {
             <dt className="text-eyebrow font-display text-meta">Dirección</dt>
             <dd className="mt-1 flex items-start gap-2 text-ink">
               <MapPin className="mt-0.5 size-4 shrink-0 text-meta" aria-hidden />
-              {cuenta.direccion}
+              {cuenta.direccion || (
+                <span className="text-meta">Por completar</span>
+              )}
             </dd>
           </div>
         </dl>
@@ -131,7 +141,9 @@ export default function PerfilAgenciaPage() {
             <dt className="text-eyebrow font-display text-meta">Correo</dt>
             <dd className="mt-1 flex items-center gap-2 break-all text-ink">
               <Mail className="size-4 shrink-0 text-meta" aria-hidden />
-              {cuenta.contacto.email}
+              {cuenta.contacto.email || (
+                <span className="text-meta">Por completar</span>
+              )}
             </dd>
           </div>
         </dl>
