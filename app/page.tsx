@@ -176,21 +176,24 @@ export default function LandingPage() {
                   Retenido hasta que el grupo vuelve
                 </p>
               </div>
+              {/* Solo promesas del producto, nunca métricas de operación:
+                  sin viajes reales no hay medianas ni coberturas que
+                  publicar, y inventarlas cuesta la confianza que se vende. */}
               <div>
                 <dt className="text-eyebrow font-display text-white/60">
-                  Respuestas
+                  Publicar un viaje
                 </dt>
                 <dd className="font-mono text-display-sm tabular-nums text-white">
-                  &lt; 3 h
+                  2 min
                 </dd>
-                <p className="text-xs text-white/60">Mediana de la primera</p>
+                <p className="text-xs text-white/60">Ruta, fecha, pasajeros y listo</p>
               </div>
               <div>
                 <dt className="text-eyebrow font-display text-white/60">
-                  Cobertura
+                  Alcance
                 </dt>
                 <dd className="font-mono text-display-sm tabular-nums text-white">
-                  Arica a Punta Arenas
+                  Todo Chile
                 </dd>
                 <p className="text-xs text-white/60">Vans, minibuses y buses</p>
               </div>
