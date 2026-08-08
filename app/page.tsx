@@ -131,7 +131,7 @@ export default function LandingPage() {
               Marketplace de transporte de pasajeros
             </p>
             <h1 className="mt-3 font-titular text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.02] font-bold text-white">
-              La van que necesitas, sin cotizar por WhatsApp
+              La van que necesitas, sin cotizar a ciegas
             </h1>
             <p className="mt-5 max-w-xl text-lg text-white/80">
               Publica tu viaje una vez y recibe respuestas de transportistas con
@@ -328,7 +328,7 @@ export default function LandingPage() {
           <div className="max-w-2xl">
             <p className="text-eyebrow font-display text-signal">El respaldo</p>
             <h2 className="mt-2 font-titular text-[clamp(1.9rem,3.4vw,2.75rem)] leading-[1.05] font-bold text-white">
-              Por qué esto es distinto a un grupo de WhatsApp
+              Papeles revisados, plata protegida, historial real
             </h2>
           </div>
 
