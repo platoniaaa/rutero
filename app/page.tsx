@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -15,12 +16,9 @@ import {
   Users,
 } from "lucide-react";
 
-import {
-  CenefaCordillera,
-  PaisajeCordillera,
-  PaisajeCosta,
-  PaisajeValle,
-} from "@/components/marketing/paisajes";
+import carreteraAndes from "@/fotos/carretera-andes.jpg";
+import heroVan from "@/fotos/hero-van-cordillera.jpg";
+import { CenefaCordillera, PaisajeValle } from "@/components/marketing/paisajes";
 import { PlacaPatente } from "@/components/shared/placa-patente";
 import { Button } from "@/components/ui/button";
 import { COMISION_VIAJE_PCT } from "@/lib/utils/rules";
@@ -112,16 +110,25 @@ export default function LandingPage() {
       {/* ---------------------------------------------------------------- Hero */}
       <section className="relative isolate overflow-hidden bg-base">
         <div className="absolute inset-0 -z-10">
-          <PaisajeCordillera />
+          {/* Foto real: una Sprinter subiendo un paso de montaña. El encuadre
+              corre la van a la derecha para que no quede bajo el titular. */}
+          <Image
+            src={heroVan}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[72%_center]"
+          />
           {/* Vela el lado del texto lo justo para que el titular contraste y
-              la montaña se siga viendo a la derecha. */}
+              la van se siga viendo a la derecha. */}
           <div
             aria-hidden
-            className="absolute inset-0 bg-gradient-to-r from-base via-base/75 to-transparent"
+            className="absolute inset-0 bg-gradient-to-r from-base via-base/80 to-base/25"
           />
           <div
             aria-hidden
-            className="absolute inset-0 bg-gradient-to-t from-base/70 via-transparent to-base/40"
+            className="absolute inset-0 bg-gradient-to-t from-base/80 via-transparent to-base/45"
           />
         </div>
 
@@ -359,8 +366,16 @@ export default function LandingPage() {
         <div className="mx-auto w-full max-w-[1200px] px-4">
           <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
             <div className="order-2 overflow-hidden rounded-xl border border-line lg:order-1">
-              <div className="aspect-[3/2]">
-                <PaisajeCosta />
+              {/* Una van en la Patagonia, rumbo a la cordillera: el trabajo
+                  que esta sección promete. */}
+              <div className="relative aspect-[3/2]">
+                <Image
+                  src={carreteraAndes}
+                  alt="Una van avanza por una carretera con la cordillera nevada al fondo"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 580px"
+                  className="object-cover object-[center_62%]"
+                />
               </div>
             </div>
 

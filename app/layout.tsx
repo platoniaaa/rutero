@@ -1,13 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Lexend } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { AppShell } from "@/components/shared/app-shell";
 import "./globals.css";
 
-const archivo = Archivo({
-  variable: "--font-archivo",
+/**
+ * Titulares. Lexend está diseñada para legibilidad y es la recomendación del
+ * estudio de diseño para marketplaces B2B: profesional sin ser fría.
+ */
+const lexend = Lexend({
+  variable: "--font-lexend",
   subsets: ["latin"],
-  axes: ["wdth"],
 });
 
 const inter = Inter({
@@ -55,7 +58,7 @@ export default function RootLayout({
   return (
     <html
       lang="es-CL"
-      className={`${archivo.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${lexend.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <AppShell>{children}</AppShell>

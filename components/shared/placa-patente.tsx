@@ -40,7 +40,7 @@ export function PlacaPatente({
       <span
         aria-hidden
         className={cn(
-          "bg-ink text-center font-display tracking-[0.3em] text-white",
+          "bg-ink text-center font-display uppercase tracking-[0.3em] text-white",
           t.banda,
         )}
       >
@@ -48,7 +48,7 @@ export function PlacaPatente({
       </span>
       <span
         className={cn(
-          "text-center font-mono font-bold tracking-[0.12em] tabular-nums",
+          "fuente-placa text-center font-bold tracking-[0.12em] tabular-nums",
           t.patente,
         )}
       >

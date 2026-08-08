@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import {
   AlertTriangle,
   Bus,
@@ -50,6 +51,8 @@ import {
 } from "@/lib/mock/selectores";
 import type { Conductor, Vehiculo } from "@/lib/mock/types";
 import { useAhora, useDatos, useSesion } from "@/lib/mock/use-datos";
+import { ENCUADRE_TIPO, FOTO_TIPO_VEHICULO } from "@/lib/ui/fotos";
+import { cn } from "@/lib/utils";
 import {
   ETIQUETA_EQUIPAMIENTO,
   ETIQUETA_LICENCIA,
@@ -80,9 +83,24 @@ function FichaVehiculo({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-start justify-between gap-4 rounded-lg border border-line bg-surface p-5">
+      <div className="overflow-hidden rounded-lg border border-line bg-surface">
+        {/* Foto genérica del tipo de vehículo: la ficha deja de ser puro
+            texto. La placa sobre la foto ancla la identidad del vehículo. */}
+        <div className="relative aspect-[16/6] bg-muted">
+          <Image
+            src={FOTO_TIPO_VEHICULO[vehiculo.tipo]}
+            alt=""
+            fill
+            sizes="(max-width: 1024px) 100vw, 900px"
+            className={cn("object-cover", ENCUADRE_TIPO[vehiculo.tipo])}
+          />
+          <div className="absolute bottom-3 left-4">
+            <PlacaPatente patente={vehiculo.patente} tamano="lg" />
+          </div>
+        </div>
+
+      <div className="flex flex-wrap items-start justify-between gap-4 p-5">
         <div className="flex min-w-0 items-start gap-4">
-          <PlacaPatente patente={vehiculo.patente} tamano="lg" />
           <div className="min-w-0">
             <h3 className="font-display text-display-sm text-ink">
               {vehiculo.marca} {vehiculo.modelo}
@@ -142,6 +160,7 @@ function FichaVehiculo({
               </Button>
             )}
           </div>
+        </div>
         </div>
       </div>
 

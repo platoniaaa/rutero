@@ -8,52 +8,55 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Paleta Cordillera. Todos los pares de texto sobre fondo pasan WCAG AA. */
-  --base: #0b3c5d; /* azul cordillera — nav y superficies oscuras */
-  --surface: #ffffff; /* tablas y formularios */
-  --nieve: #f7f9fb; /* superficie alterna, secciones de la landing */
-  --ink: #14283a; /* texto principal */
-  --signal: #f4a259; /* acción primaria — luz de atardecer en la montaña */
-  --go: #1d7874; /* confirmado, pago liberado — verde de lago */
-  --stop: #c0492f; /* vencido, cancelado, disputa */
-  --meta: #46596b; /* metadata — gris piedra */
+  /* Paleta Cordillera, versión "profesional neutra" (ago-2026): base casi
+     blanca, texto pizarra, y el azul cordillera como único color de acción.
+     El naranja pasa a ser color de estado (espera / activo sobre navy), no
+     primario. Todos los pares de texto sobre fondo pasan WCAG AA. */
+  --base: #0b3c5d; /* azul cordillera — marca, nav y botones primarios */
+  --surface: #ffffff; /* tarjetas, tablas y formularios */
+  --nieve: #f8fafc; /* fondo de la app y secciones alternas */
+  --ink: #0f172a; /* texto principal — pizarra */
+  --signal: #f4a259; /* estado de espera y activo sobre superficies oscuras */
+  --go: #15803d; /* confirmado, pago liberado */
+  --stop: #dc2626; /* vencido, cancelado, disputa */
+  --meta: #64748b; /* metadata — gris pizarra */
 
   /* Tonos de apoyo derivados de la paleta */
   --base-soft: #12496e; /* separadores y hover sobre superficies oscuras */
   --base-deep: #072a41; /* pie de página y bloques de mayor peso */
   --signal-soft: #fdf0e2; /* fondo de badge ámbar */
-  --go-soft: #e2f1f0; /* fondo de badge verde */
-  --stop-soft: #f9e8e4; /* fondo de badge rojo */
-  --line: #dbe3ea; /* borde por defecto sobre superficie clara */
+  --go-soft: #eaf5ee; /* fondo de badge verde */
+  --stop-soft: #fdecec; /* fondo de badge rojo */
+  --line: #e2e8f0; /* borde por defecto sobre superficie clara */
 
   /* Versiones oscuras para texto sobre los fondos suaves. El color puro no
      alcanza contraste ahí, así que cada uno tiene su tono de tinta. */
   --signal-ink: #8a4b12;
-  --go-ink: #14544f;
-  --stop-ink: #8e3423;
+  --go-ink: #166534;
+  --stop-ink: #991b1b;
 
   /* Mapeo a los tokens de shadcn */
-  --background: var(--surface);
+  --background: var(--nieve);
   --foreground: var(--ink);
   --card: var(--surface);
   --card-foreground: var(--ink);
   --popover: var(--surface);
   --popover-foreground: var(--ink);
-  --primary: var(--signal);
-  --primary-foreground: var(--ink);
-  --secondary: #eef2f5;
+  /* El botón primario es azul sólido con texto blanco, como el negro de Uber
+     o el morado de Cabify: un color de marca con un solo rol. */
+  --primary: var(--base);
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
   --secondary-foreground: var(--ink);
-  --muted: #f4f6f8;
+  --muted: #f1f5f9;
   --muted-foreground: var(--meta);
-  --accent: #eef2f5;
+  --accent: #f1f5f9;
   --accent-foreground: var(--ink);
   --destructive: var(--stop);
   --border: var(--line);
   --input: var(--line);
-  /* El ámbar no alcanza 3:1 contra el blanco, así que el anillo de foco usa
-     el tinta para que se vea sobre formularios y tablas. */
-  --ring: var(--ink);
-  --radius: 0.375rem;
+  --ring: var(--base);
+  --radius: 0.5rem;
 }
 
 @theme inline {
@@ -96,11 +99,14 @@
   --color-line: var(--line);
 
   --font-sans: var(--font-inter);
-  --font-display: var(--font-archivo);
-  --font-mono: var(--font-jetbrains-mono);
+  --font-display: var(--font-lexend);
+  /* `font-mono` apunta a Inter a propósito: los montos y códigos van en la
+     fuente de texto con números tabulares, como en cualquier app de pago
+     seria. La mono de verdad queda reservada a la placa patente
+     (`.fuente-placa`), que es donde imita a un objeto físico. */
+  --font-mono: var(--font-inter);
 
-  /* Escala tipográfica. Los display son para rotulación: condensados,
-     apretados y en mayúsculas. */
+  /* Escala tipográfica de titulares: Lexend, caja normal, peso firme. */
   --text-display-lg: 2.75rem;
   --text-display-lg--line-height: 1;
   --text-display-lg--letter-spacing: -0.02em;
@@ -173,6 +179,13 @@
     @apply outline-ring outline-2 outline-offset-2;
   }
 
+  /* Los rótulos chicos (.text-eyebrow) iban en mayúsculas por la fuente de
+     titulares; esa transformación ahora vive acá para que sigan leyéndose
+     como etiquetas sin que los títulos griten. */
+  .text-eyebrow {
+    text-transform: uppercase;
+  }
+
   /* En celular todo lo que se toca mide al menos 44px. Los tamaños de shadcn
      van de 32 a 36, que sirven con mouse pero no con el pulgar. Se apunta a
      los data-slot para no inflar los enlaces de texto corrido. */
@@ -222,19 +235,24 @@
 }
 
 @layer utilities {
-  /* Rotulación de flota: condensada, alta y en mayúsculas. */
+  /* Titulares de la interfaz. Antes esto condensaba y pasaba a mayúsculas
+     (leía a cartel de feria en las tarjetas); ahora es Lexend en caja normal,
+     que es como escriben sus titulares Uber, Cabify y DiDi. */
   .font-display {
     font-family: var(--font-display);
-    font-stretch: 87.5%;
-    text-transform: uppercase;
+    letter-spacing: -0.01em;
   }
 
-  /* Misma familia condensada pero en caja natural. Para los titulares largos
-     de la landing, donde la versal corrida cansa la lectura. */
+  /* Alias para los titulares grandes de la landing. Misma familia. */
   .font-titular {
     font-family: var(--font-display);
-    font-stretch: 87.5%;
     letter-spacing: -0.015em;
+  }
+
+  /* La placa patente es el único lugar donde sobrevive la fuente mono: ahí
+     imita el estampado de una placa física. */
+  .fuente-placa {
+    font-family: var(--font-jetbrains-mono), monospace;
   }
 
   /* Superficie oscura: invierte los tokens para que los componentes de shadcn

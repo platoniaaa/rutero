@@ -1,7 +1,10 @@
+import Image from "next/image";
 import { Briefcase, Users } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { PlacaPatente } from "@/components/shared/placa-patente";
+import { ENCUADRE_TIPO, FOTO_TIPO_VEHICULO } from "@/lib/ui/fotos";
+import type { TipoVehiculo } from "@/lib/mock/types";
 
 export type VehiculoResumen = {
   patente: string;
@@ -15,23 +18,39 @@ export type VehiculoResumen = {
 };
 
 /**
- * Tarjeta de vehículo. La placa manda: es el objeto que ambos lados reconocen
- * al instante.
+ * Tarjeta de vehículo. La foto del tipo arriba y la placa encima: es el
+ * objeto que ambos lados reconocen al instante.
  */
 export function TarjetaVehiculo({
   vehiculo,
+  tipoFoto,
   className,
 }: {
   vehiculo: VehiculoResumen;
+  /** Tipo canónico para elegir la foto. Sin él, la tarjeta va sin foto. */
+  tipoFoto?: TipoVehiculo;
   className?: string;
 }) {
   return (
     <article
       className={cn(
-        "flex flex-col gap-3 rounded-lg border border-line bg-surface p-4",
+        "flex flex-col gap-3 overflow-hidden rounded-lg border border-line bg-surface p-4",
+        tipoFoto && "pt-0",
         className,
       )}
     >
+      {tipoFoto && (
+        <div className="relative -mx-4 aspect-[16/7] bg-muted">
+          <Image
+            src={FOTO_TIPO_VEHICULO[tipoFoto]}
+            alt=""
+            fill
+            sizes="(max-width: 768px) 100vw, 420px"
+            className={cn("object-cover", ENCUADRE_TIPO[tipoFoto])}
+          />
+        </div>
+      )}
+
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h3 className="font-display text-display-sm leading-none text-ink">
