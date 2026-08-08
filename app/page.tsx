@@ -5,6 +5,7 @@ import {
   ArrowRight,
   BadgeCheck,
   CalendarClock,
+  CircleDollarSign,
   FileCheck2,
   Handshake,
   Lock,
@@ -26,7 +27,7 @@ import { COMISION_VIAJE_PCT } from "@/lib/utils/rules";
 export const metadata: Metadata = {
   title: "Rutero · Transporte de pasajeros para agencias de turismo",
   description:
-    "Publica tu viaje, recibe respuestas de transportistas verificados y paga con el respaldo del escrow. Marketplace chileno de vans, minibuses y sprinters.",
+    "Rutero conecta agencias de turismo con transportistas verificados. Publica tu viaje gratis, compara respuestas y paga con el respaldo del escrow. Vans, minibuses y sprinters en todo Chile.",
 };
 
 const PASOS = [
@@ -94,6 +95,9 @@ export default function LandingPage() {
             <Button variant="ghost" asChild className="hidden sm:inline-flex">
               <Link href="#como-funciona">Cómo funciona</Link>
             </Button>
+            <Button variant="ghost" asChild className="hidden md:inline-flex">
+              <Link href="#agencias">Para agencias</Link>
+            </Button>
             <Button variant="ghost" asChild className="hidden sm:inline-flex">
               <Link href="#transportistas">Para transportistas</Link>
             </Button>
@@ -135,7 +139,7 @@ export default function LandingPage() {
         <div className="mx-auto w-full max-w-[1200px] px-4 py-20 lg:py-28">
           <div className="max-w-2xl">
             <p className="text-eyebrow font-display text-signal">
-              Marketplace de transporte de pasajeros
+              Transporte para agencias de turismo
             </p>
             <h1 className="mt-3 font-titular text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.02] font-bold text-white">
               La van que necesitas, sin cotizar a ciegas
@@ -190,12 +194,14 @@ export default function LandingPage() {
               </div>
               <div>
                 <dt className="text-eyebrow font-display text-white/60">
-                  Alcance
+                  Costo para la agencia
                 </dt>
                 <dd className="font-mono text-display-sm tabular-nums text-white">
-                  Todo Chile
+                  $0
                 </dd>
-                <p className="text-xs text-white/60">Vans, minibuses y buses</p>
+                <p className="text-xs text-white/60">
+                  La comisión la paga el transportista
+                </p>
               </div>
             </dl>
           </div>
@@ -214,10 +220,11 @@ export default function LandingPage() {
                 Cotizar transporte se lleva la mañana
               </h2>
               <p className="mt-4 text-meta">
-                Hoy conseguir una van es llamar a tres contactos, esperar que
-                contesten, y aceptar al que responde primero sin saber si tiene
-                los papeles al día. Si falla el día del viaje, no hay a quién
-                reclamarle.
+                Para la agencia, conseguir una van es llamar a tres contactos,
+                esperar que contesten y aceptar al que responde primero, sin
+                saber si tiene los papeles al día. Y si la van falla el día del
+                viaje, el que queda mal con el pasajero no es el chofer: es la
+                agencia.
               </p>
               <p className="mt-3 text-meta">
                 Del otro lado, el furgonero tiene la van parada media semana
@@ -367,6 +374,121 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ------------------------------------------------------ Para agencias */}
+      <section id="agencias" className="scroll-mt-16 bg-surface py-16 lg:py-20">
+        <div className="mx-auto w-full max-w-[1200px] px-4">
+          <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+            <div>
+              <p className="text-eyebrow font-display text-meta">Para agencias</p>
+              <h2 className="mt-2 font-titular text-[clamp(1.9rem,3.4vw,2.75rem)] leading-[1.05] font-bold text-ink">
+                Cierras el transporte el mismo día
+              </h2>
+              <p className="mt-4 text-meta">
+                Publicas la ruta con tu presupuesto y las respuestas llegan a
+                una bandeja comparable. Todo el viaje queda en un solo lugar:
+                el chat, la nómina de pasajeros y el pago protegido.
+              </p>
+
+              <ul className="mt-6 flex flex-col gap-4">
+                {[
+                  {
+                    icono: CircleDollarSign,
+                    t: "Publicar te cuesta $0",
+                    d: "Rutero no le cobra comisión a la agencia: la paga el transportista. Tu presupuesto es para el viaje.",
+                  },
+                  {
+                    icono: Users,
+                    t: "El precio, también por pasajero",
+                    d: "Cada respuesta muestra su equivalente por pasajero: la cifra con la que armas el margen frente a tu cliente.",
+                  },
+                  {
+                    icono: ShieldCheck,
+                    t: "Si la van no llega, recuperas todo",
+                    d: "Reembolso total y tu oferta se reabre marcada como urgente. El no-show deja de ser riesgo tuyo.",
+                  },
+                ].map(({ icono: Icono, t, d }) => (
+                  <li key={t} className="flex items-start gap-3">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-go-soft text-go-ink">
+                      <Icono className="size-5" aria-hidden />
+                    </span>
+                    <div>
+                      <p className="font-medium text-ink">{t}</p>
+                      <p className="text-sm text-meta">{d}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              <Button size="lg" className="mt-8" asChild>
+                <Link href="/entrar">
+                  Publicar mi primer viaje
+                  <ArrowRight className="size-4" aria-hidden />
+                </Link>
+              </Button>
+            </div>
+
+            {/* Muestra del producto: la hoja de ruta que recibe el chofer,
+                armada desde la nómina que la agencia carga una sola vez. */}
+            <div className="rounded-xl border border-line bg-nieve p-4 sm:p-5">
+              <div className="rounded-lg border border-line bg-surface p-5 shadow-sm">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line pb-3">
+                  <div>
+                    <p className="text-eyebrow font-display text-meta">
+                      Hoja de ruta
+                    </p>
+                    <p className="font-display text-display-sm text-ink">
+                      Aeropuerto SCL → Hotel Alto Providencia
+                    </p>
+                  </div>
+                  <span className="font-mono text-xs text-meta">RTQ2KX</span>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3 border-b border-line py-3">
+                  <PlacaPatente patente="GHJK34" tamano="sm" />
+                  <p className="text-sm text-meta">
+                    Rodrigo Pérez · Hyundai H1 · Salida 08:30
+                  </p>
+                </div>
+
+                <ol className="divide-y divide-line">
+                  {[
+                    { n: "Ana Riquelme Soto", d: "Llega en LA841" },
+                    { n: "Pablo Fuenzalida R.", d: "Llega en LA841" },
+                    { n: "Carmen Espinoza V.", d: "Llega en H2 610" },
+                    { n: "Diego Salas M.", d: "Llega en H2 610" },
+                  ].map((p, i) => (
+                    <li key={p.n} className="flex items-center gap-3 py-2.5">
+                      <span className="font-mono text-xs tabular-nums text-meta">
+                        {i + 1}.
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-sm font-medium text-ink">
+                          {p.n}
+                        </span>
+                        <span className="block text-xs text-meta">{p.d}</span>
+                      </span>
+                      <span
+                        aria-hidden
+                        className="size-4 shrink-0 rounded border border-line"
+                      />
+                    </li>
+                  ))}
+                </ol>
+
+                <p className="border-t border-line pt-3 text-xs text-meta">
+                  8 pasajeros · lista completa en la hoja impresa
+                </p>
+              </div>
+
+              <p className="mt-3 text-xs text-meta">
+                La nómina la cargas una vez —o la pegas desde tu planilla— y el
+                chofer la lleva impresa, con casilla para marcar presente.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ------------------------------------------------- Para transportistas */}
       <section id="transportistas" className="scroll-mt-16 bg-nieve py-16 lg:py-20">
         <div className="mx-auto w-full max-w-[1200px] px-4">
@@ -492,6 +614,12 @@ export default function LandingPage() {
               className="flex min-h-11 items-center hover:text-white"
             >
               Cómo funciona
+            </Link>
+            <Link
+              href="#agencias"
+              className="flex min-h-11 items-center hover:text-white"
+            >
+              Agencias
             </Link>
             <Link
               href="#transportistas"
