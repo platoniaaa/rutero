@@ -5,16 +5,16 @@ import {
   ArrowRight,
   BadgeCheck,
   CalendarClock,
-  CircleDollarSign,
   FileCheck2,
   Handshake,
   Lock,
   MessageSquare,
-  Percent,
   ShieldCheck,
   Star,
+  Timer,
   Truck,
   Users,
+  Wallet,
 } from "lucide-react";
 
 import carreteraAndes from "@/fotos/carretera-andes.jpg";
@@ -22,38 +22,33 @@ import heroVan from "@/fotos/hero-van-cordillera.jpg";
 import { CenefaCordillera, PaisajeValle } from "@/components/marketing/paisajes";
 import { PlacaPatente } from "@/components/shared/placa-patente";
 import { Button } from "@/components/ui/button";
-import { COMISION_VIAJE_PCT } from "@/lib/utils/rules";
 
 export const metadata: Metadata = {
-  title: "Rutero · Transporte de pasajeros para agencias de turismo",
+  title: "Rutero · Transporte de pasajeros para turismo",
   description:
-    "Rutero conecta agencias de turismo con transportistas verificados. Publica tu viaje gratis, compara respuestas y paga con el respaldo del escrow. Vans, minibuses y sprinters en todo Chile.",
+    "Rutero conecta agencias de turismo con transportistas de pasajeros. Las agencias publican su viaje, las vans responden, y el pago queda protegido hasta que el grupo vuelve. Todo Chile.",
 };
 
 const PASOS = [
   {
     icono: Users,
-    titulo: "Publicas el viaje",
-    detalle:
-      "Ruta, fecha, cuántos pasajeros y tu presupuesto referencial. Te toma dos minutos y eliges si cierra en 6, 24 o 72 horas.",
+    titulo: "Se publica el viaje",
+    detalle: "Ruta, fecha, pasajeros y presupuesto. Dos minutos.",
   },
   {
     icono: Handshake,
-    titulo: "Llegan las respuestas",
-    detalle:
-      "Los transportistas de la zona aceptan tu precio o contraofertan con su monto y una nota. Los comparas en una sola tabla.",
+    titulo: "Las vans responden",
+    detalle: "Aceptan el precio o contraofertan. Todo en una tabla.",
   },
   {
     icono: Lock,
-    titulo: "Adjudicas y pagas al escrow",
-    detalle:
-      "La plata queda retenida por Rutero. Recién ahí se revelan los contactos y se abre el chat del viaje.",
+    titulo: "Se adjudica y se paga",
+    detalle: "Rutero retiene la plata. Recién ahí se abren contactos y chat.",
   },
   {
     icono: ShieldCheck,
     titulo: "Se libera al completarse",
-    detalle:
-      "El viaje se ejecuta, tú confirmas y el pago se libera. Si algo falla, abres una disputa y la plata no se mueve.",
+    detalle: "El grupo vuelve, se confirma y el pago se libera. Si algo falla, disputa.",
   },
 ];
 
@@ -62,19 +57,19 @@ const RESPALDO = [
     icono: FileCheck2,
     titulo: "Papeles al día, revisados uno por uno",
     detalle:
-      "Inscripción DS 80, permiso de circulación, revisión técnica, SOAP y licencia profesional A2 o A3. Si un documento crítico vence, el transportista no puede postular hasta renovarlo.",
+      "DS 80, permiso de circulación, revisión técnica, SOAP y licencia profesional. Documento vencido: no se postula.",
   },
   {
     icono: Lock,
-    titulo: "El pago no se mueve hasta que el viaje se completa",
+    titulo: "La plata no se mueve hasta que el viaje se completa",
     detalle:
-      "La agencia deposita al adjudicar y Rutero retiene. Si el transportista no aparece, el reembolso es total y la oferta se reabre como urgente.",
+      "Si la van no aparece, el reembolso es total y la oferta se reabre como urgente.",
   },
   {
     icono: Star,
     titulo: "Calificación de los dos lados, y ciega",
     detalle:
-      "Ninguno ve la del otro hasta que ambos califiquen. Nadie califica bien por miedo a la represalia, y el historial no se puede llevar a otra parte.",
+      "Nadie ve la del otro hasta que ambos califican. El historial queda a la vista.",
   },
 ];
 
@@ -139,15 +134,14 @@ export default function LandingPage() {
         <div className="mx-auto w-full max-w-[1200px] px-4 py-20 lg:py-28">
           <div className="max-w-2xl">
             <p className="text-eyebrow font-display text-signal">
-              Transporte para agencias de turismo
+              Transporte de pasajeros para turismo
             </p>
             <h1 className="mt-3 font-titular text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.02] font-bold text-white">
-              La van que necesitas, sin cotizar a ciegas
+              Las agencias publican, las vans responden
             </h1>
             <p className="mt-5 max-w-xl text-lg text-white/80">
-              Publica tu viaje una vez y recibe respuestas de transportistas con
-              los papeles al día. Comparas precios en una tabla, adjudicas, y el
-              pago queda retenido hasta que el grupo vuelve.
+              Viajes en vans, minibuses y sprinters por todo Chile, con papeles
+              revisados y pago protegido hasta que el grupo vuelve.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
@@ -165,9 +159,9 @@ export default function LandingPage() {
               </Button>
             </div>
 
-            {/* La comisión no va acá: el hero le habla al cliente, no al
-                modelo de negocio. El 5% sigue en "Para transportistas", que
-                es el público que lo paga y necesita verlo antes de sumarse. */}
+            {/* Nada de comisiones ni costos en la landing (directiva
+                08-ago-2026): decir quién paga desincentiva al que paga. El
+                desglose de montos vive dentro de la app, donde corresponde. */}
             <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-6">
               <div>
                 <dt className="text-eyebrow font-display text-white/60">
@@ -194,14 +188,12 @@ export default function LandingPage() {
               </div>
               <div>
                 <dt className="text-eyebrow font-display text-white/60">
-                  Costo para la agencia
+                  Alcance
                 </dt>
                 <dd className="font-mono text-display-sm tabular-nums text-white">
-                  $0
+                  Todo Chile
                 </dd>
-                <p className="text-xs text-white/60">
-                  La comisión la paga el transportista
-                </p>
+                <p className="text-xs text-white/60">Vans, minibuses y buses</p>
               </div>
             </dl>
           </div>
@@ -220,15 +212,10 @@ export default function LandingPage() {
                 Cotizar transporte se lleva la mañana
               </h2>
               <p className="mt-4 text-meta">
-                Para la agencia, conseguir una van es llamar a tres contactos,
-                esperar que contesten y aceptar al que responde primero, sin
-                saber si tiene los papeles al día. Y si la van falla el día del
-                viaje, el que queda mal con el pasajero no es el chofer: es la
-                agencia.
-              </p>
-              <p className="mt-3 text-meta">
-                Del otro lado, el furgonero tiene la van parada media semana
-                porque su demanda depende de a quién conozca.
+                Hoy esto se arregla por teléfono: la agencia llama a ciegas a
+                los contactos de siempre, y el conductor tiene la van parada
+                esperando que alguien lo conozca. Si algo falla el día del
+                viaje, no hay respaldo para nadie.
               </p>
 
               <ul className="mt-6 flex flex-col gap-3">
@@ -384,27 +371,26 @@ export default function LandingPage() {
                 Cierras el transporte el mismo día
               </h2>
               <p className="mt-4 text-meta">
-                Publicas la ruta con tu presupuesto y las respuestas llegan a
-                una bandeja comparable. Todo el viaje queda en un solo lugar:
-                el chat, la nómina de pasajeros y el pago protegido.
+                Publicas una vez y comparas las respuestas en una bandeja: el
+                chat, la nómina y el pago quedan en el mismo lugar.
               </p>
 
               <ul className="mt-6 flex flex-col gap-4">
                 {[
                   {
-                    icono: CircleDollarSign,
-                    t: "Publicar te cuesta $0",
-                    d: "Rutero no le cobra comisión a la agencia: la paga el transportista. Tu presupuesto es para el viaje.",
+                    icono: Timer,
+                    t: "Tú pones el plazo",
+                    d: "La oferta cierra cuando tú digas: en 6, 24 o 72 horas.",
                   },
                   {
                     icono: Users,
                     t: "El precio, también por pasajero",
-                    d: "Cada respuesta muestra su equivalente por pasajero: la cifra con la que armas el margen frente a tu cliente.",
+                    d: "Cada respuesta muestra su equivalente por pasajero, la cifra de tu margen.",
                   },
                   {
                     icono: ShieldCheck,
                     t: "Si la van no llega, recuperas todo",
-                    d: "Reembolso total y tu oferta se reabre marcada como urgente. El no-show deja de ser riesgo tuyo.",
+                    d: "Reembolso total y tu oferta se reabre como urgente.",
                   },
                 ].map(({ icono: Icono, t, d }) => (
                   <li key={t} className="flex items-start gap-3">
@@ -481,8 +467,7 @@ export default function LandingPage() {
               </div>
 
               <p className="mt-3 text-xs text-meta">
-                La nómina la cargas una vez —o la pegas desde tu planilla— y el
-                chofer la lleva impresa, con casilla para marcar presente.
+                La nómina se carga una vez y el chofer la lleva impresa.
               </p>
             </div>
           </div>
@@ -515,9 +500,8 @@ export default function LandingPage() {
                 Tu van deja de estar parada
               </h2>
               <p className="mt-4 text-meta">
-                Da lo mismo si tienes una van o seis: es la misma cuenta. Cargas
-                tu vehículo, tu licencia y tus papeles, bloqueas las horas del
-                recorrido escolar, y solo te llegan los viajes que puedes tomar.
+                Una van o seis, es la misma cuenta: cargas tu vehículo y tus
+                papeles, y te llegan solo los viajes que puedes tomar.
               </p>
 
               <ul className="mt-6 flex flex-col gap-4">
@@ -525,17 +509,17 @@ export default function LandingPage() {
                   {
                     icono: CalendarClock,
                     t: "Tu agenda manda",
-                    d: "Bloqueas el escolar de lunes a viernes y los viajes que se cruzan ni te aparecen.",
+                    d: "Bloqueas el escolar y lo que se cruza ni te aparece.",
                   },
                   {
-                    icono: Percent,
-                    t: `${COMISION_VIAJE_PCT}% de comisión, sin letra chica`,
-                    d: "Ves el bruto, la comisión y lo que recibes antes de responder.",
+                    icono: Wallet,
+                    t: "Sabes cuánto recibes antes de aceptar",
+                    d: "El monto de cada viaje, claro antes de responder.",
                   },
                   {
                     icono: MessageSquare,
-                    t: "El grupo te llega armado",
-                    d: "¿Tienes pasajeros pero no eres agencia? Publica el grupo y una agencia te paga comisión por el dato.",
+                    t: "¿Tienes pasajeros? También valen",
+                    d: "Publica el grupo y una agencia te paga por el dato.",
                   },
                 ].map(({ icono: Icono, t, d }) => (
                   <li key={t} className="flex items-start gap-3">
@@ -569,9 +553,8 @@ export default function LandingPage() {
               Tu próximo viaje empieza acá
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-white/70">
-              Publica en dos minutos y recibe respuestas de transportistas con
-              los papeles al día. Sin costo para la agencia, con el pago
-              respaldado hasta que el grupo vuelve.
+              Publica tu viaje o suma tu van: el pago queda respaldado hasta
+              que el grupo vuelve.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Button size="lg" asChild>
@@ -597,7 +580,8 @@ export default function LandingPage() {
           <div>
             <p className="font-display text-display-sm text-white">Rutero</p>
             <p className="mt-1 text-sm text-white/60">
-              Transporte de pasajeros para agencias de turismo en Chile.
+              Agencias de turismo y transportistas de pasajeros, en una sola
+              plataforma.
             </p>
           </div>
           {/* `min-h-11` en cada enlace: en celular eran blancos de 20px de
